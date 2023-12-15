@@ -29,6 +29,7 @@ author:
     email: "david@tweedegolf.com"
 
 normative:
+  RFC8915:
 
 informative:
 
@@ -46,47 +47,53 @@ TODO Introduction
 
 # Conventions and Definitions
 
+Throughout the text, the terms client and server will refer to those roles in an NTS Key Exchange session as specified in {{RFC8915}}.
+
 {::boilerplate bcp14-tagged}
 
-# New NTS records
+# New NTS record types
 
-NTS Record: Keep Alive
-Critical bit: 0
+## Keep Alive
 Record Type Number: To be assigned by IANA (draft implementations: 0x4000)
+Critical bit: 0
 
-Client MUST send with no body. Client MUST NOT use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List
+Indicates a desire to keep the TLS connection active for more than one message exchange. This can be used by a Pool to reuse connections to downstream NTS-KE servers multiple times, reducing load on both the pool and downstream servers.
 
-When supported by server, Server should include a Keep Alive record in the response and keep the TLS connection active after the response to handle further requests from the client.
+Client MUST send this record with a 0 sized body. Client MUST NOT use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server SHOULD ignore any body for the Keep Alive record.
 
----
+When supported by server and allowed for the request in question, the server MUST include a Keep Alive record with 0 sized body in the response and keep the TLS connection active after the response to handle further requests from the client. A client SHOULD ignore any body for the Keep Alive record.
 
-NTS Record: Supported Algorithm List
-Critical bit: 1
+When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last reqeust or response respectively to use the connection.
+
+## Supported Algorithm List
 Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
+Critical bit: 1
 
-Client MUST send with no body. Clients MAY use Keep Alive in combination with this record.
+This record can be used by a pool to query downstream server about which AEAD algorithms the downstream server supports.
+
+Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. A request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
 
 Server MUST ignore any client body sent, and MUST send in response a Supported Algorithm List record with as data a list of tuples of two 16 bit integers, the first giving a algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.
 
----
+When included, the server MUST NOT negotiate a next protocol, aead algorithm or keys for this request.
 
-NTS Record: Fixed Key Request
-Critical Bit: 1
+## Fixed Key Request
 Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
+Critical Bit: 1
+
+When client is properly authenticated, the server SHOULD not perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.
 
 When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm. The data in the record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
 
-MUST not be sent by a server. Server SHOULD treat extension field as unknown for any client not authenticated with a client side tls certificate configured through the servers policy as allowed for
+MUST not be sent by a server. Server SHOULD treat extension field as unknown when sent by any client not authorized to make fixed key requests.
 
-When client is properly authenticated, the server SHOULD not perform Key Extraction for but rather use the keys provided by the client in the extension field.
-
----
-
-NTS Record: NTP Server Deny
-Critical Bit: 0
+## NTP Server Deny
 Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
+Critical Bit: 0
 
-When provided by a client, indicates a desire to connect to a server other than the server specified in the record. A client MAY send multiple of these records as desired. The data in the record SHOULD match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.
+When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.
+
+A client MAY send multiple of these records if desired. The data in the record SHOULD match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.
 
 MUST not be sent by a server. Server MAY at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.
 
