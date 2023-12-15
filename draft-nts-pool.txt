@@ -68,20 +68,20 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  New NTS record types
-     3.1.  Keep Alive
-     3.2.  Supported Algorithm List
-     3.3.  Fixed Key Request
-     3.4.  NTP Server Deny
-   4.  Security Considerations
-   5.  IANA Considerations
-   6.  Normative References
+   3.  General pool architecture
+   4.  Client facilities for pools
+   5.  New NTS record types
+     5.1.  Keep Alive
+     5.2.  Supported Algorithm List
+     5.3.  Fixed Key Request
+     5.4.  NTP Server Deny
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  Normative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
-
-   TODO Introduction
 
 2.  Conventions and Definitions
 
@@ -94,9 +94,28 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  New NTS record types
+3.  General pool architecture
 
-3.1.  Keep Alive
+   We propose a pool model where the pool is providing an NTS Key
+   Exchange service to the outside world.  This allows the pool to
+   terminate the TLS connection and avoids having to distribute
+   certificates to all downstream time servers.  However, that also
+   implies that the pool needs to extract the keys and somehow get valid
+   cookies for the selected downstream time server.
+
+   To solve this, we ask downstream servers to provide an extension of
+   the NTS Key Exchange protocol that allows the pool to directly
+   communicate the keys to the downstream server, instead of having the
+   downstream server extract this from the TLS Session.  The explicit
+   communication of keys allows the pool to do the extraction from the
+   TLS server whilst remaining oblivious to the cookie format of the
+   downstream server.
+
+4.  Client facilities for pools
+
+5.  New NTS record types
+
+5.1.  Keep Alive
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4000) Critical bit: 0
@@ -123,7 +142,7 @@ Table of Contents
    request or response.  Any TLS "close_notify" SHALL be sent only after
    the last reqeust or response respectively to use the connection.
 
-3.2.  Supported Algorithm List
+5.2.  Supported Algorithm List
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4001) Critical bit: 1
@@ -144,7 +163,7 @@ Table of Contents
    When included, the server MUST NOT negotiate a next protocol, aead
    algorithm or keys for this request.
 
-3.3.  Fixed Key Request
+5.3.  Fixed Key Request
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4002) Critical Bit: 1
@@ -166,7 +185,7 @@ Table of Contents
    unknown when sent by any client not authorized to make fixed key
    requests.
 
-3.4.  NTP Server Deny
+5.4.  NTP Server Deny
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4003) Critical Bit: 0
@@ -186,15 +205,15 @@ Table of Contents
    the request from the client and still provide the given server in an
    NTPv4 Server Negotiation record.
 
-4.  Security Considerations
+6.  Security Considerations
 
    TODO Security
 
-5.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-6.  Normative References
+8.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
