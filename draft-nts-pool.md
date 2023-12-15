@@ -42,14 +42,22 @@ The aim of this document is to describe a proof of concept system for NTS pools 
 
 # Introduction
 
-TODO Introduction
-
 
 # Conventions and Definitions
 
 Throughout the text, the terms client and server will refer to those roles in an NTS Key Exchange session as specified in {{RFC8915}}.
 
 {::boilerplate bcp14-tagged}
+
+# General pool architecture
+
+We propose a pool model where the pool is providing an NTS Key Exchange service to the outside world. This allows the pool to terminate the TLS connection and avoids having to distribute certificates to all downstream time servers. However, that also implies that the pool needs to extract the keys and somehow get valid cookies for the selected downstream time server.
+
+To solve this, we ask downstream servers to provide an extension of the NTS Key Exchange protocol that allows the pool to directly communicate the keys to the downstream server, instead of having the downstream server extract this from the TLS Session. The explicit communication of keys allows the pool to do the extraction from the TLS server whilst remaining oblivious to the cookie format of the downstream server.
+
+# Client facilities for pools
+
+
 
 # New NTS record types
 
