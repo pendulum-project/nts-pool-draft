@@ -74,11 +74,23 @@ When supported by server and allowed for the request in question, the server MUS
 
 When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last reqeust or response respectively to use the connection.
 
+## Supported Next Protocol List
+Record Type Number: To be assigned by IANA (draft implementations: 0x4004)
+Critical bit: 1
+
+This record can be used by a pool to query downstream servers about which next protocols they support.
+
+Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. A request with this record SHOULD NOT inclue a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
+
+Server MUST ignore any client body sent, and MUST send in response a Supported Next Protocol List record with as data a list of 16 bit integers, giving the protocol ID's the server supports.
+
+When included, the server MUST NOT negotiate a next protocol, aead algorithm or keys for this request.
+
 ## Supported Algorithm List
 Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
 Critical bit: 1
 
-This record can be used by a pool to query downstream server about which AEAD algorithms the downstream server supports.
+This record can be used by a pool to query downstream servers about which AEAD algorithms they support.
 
 Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. A request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
 
