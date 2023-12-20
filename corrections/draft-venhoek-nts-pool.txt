@@ -9,7 +9,7 @@ Expires: 22 June 2024
 
 
                    NTS extensions for enabling pools
-                         draft-nts-pool-latest
+                     draft-venhoek-nts-pool-latest
 
 Abstract
 
@@ -28,7 +28,7 @@ About This Document
    The latest revision of this draft can be found at https://pendulum-
    project.github.io/nts-pool-draft/draft-nts-pool.html.  Status
    information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-nts-pool/.
+   https://datatracker.ietf.org/doc/draft-venhoek-nts-pool/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/pendulum-project/nts-pool-draft.
