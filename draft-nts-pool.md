@@ -45,7 +45,7 @@ The aim of this document is to describe a proof of concept system for NTS pools 
 
 # Conventions and Definitions
 
-Throughout the text, the terms client and server will refer to those roles in an NTS Key Exchange session as specified in {{RFC8915}}.
+Throughout the text, the terms client and server will refer to those roles in an NTS Key Exchange session as specified in {{RFC8915}}. Please note that this means that the pool itself operates in both roles: As a server towards users of the pool, and as a client towards the downstream time sources.
 
 {::boilerplate bcp14-tagged}
 
@@ -57,7 +57,8 @@ To solve this, we ask downstream servers to provide an extension of the NTS Key 
 
 # Client facilities for pools
 
-
+One challenge with a pool through NTS Key Exchange is that clients that allow for explicit pool configuration do want to end up with multiple independent time sources. To ensure they won't have to do multiple NTS Key Exchange sessions just to discard the result because they already have the time server they
+result in, we also introduce a record clients can use to indicate which downstream time servers they don't want.
 
 # New NTS record types
 
