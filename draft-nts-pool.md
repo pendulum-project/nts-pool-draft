@@ -32,7 +32,10 @@ normative:
   RFC8915:
 
 informative:
-
+  RFC5905:
+  Pool:
+    target: https://www.ntppool.org
+    title: NTP Pool website
 
 --- abstract
 
@@ -42,6 +45,13 @@ The aim of this document is to describe a proof of concept system for NTS pools 
 
 # Introduction
 
+NTS {{RFC8915}} provides authenticity and limited confidentiality for NTP {{RFC5905}}. However, the key exchange preceding the actual time exchange makes it hard to implement a pool for NTS supporting servers in a manner similar to the DNS resolution approach taken to provide the NTP Pool {{Pool}}.
+
+This document aims to provide extensions to the NTS Key Exchange sessions that allow an implementation of a pool for NTS that
+
+  - Is usable without changes to client,
+  - Avoids constrainging the downstream time source's cookie format,
+  - Avoids downstream time sources having potential access to all traffic.
 
 # Conventions and Definitions
 
@@ -139,7 +149,7 @@ IANA is requested to allocate the following entries in the Network Time Security
 | [[TBD]] | Supported Next Protocol List | [[this memo]] {{keepalive}} |
 | [[TBD]] | Supported Algorithm List | [[this memo]] {{supportedalgorithm}} |
 | [[TBD]] | Fixed Key Request | [[this memo]] {{fixedkey}} |
-| [[TBD]] | NTP Server Deny | [[this memo]] {{serverdeny}} | 
+| [[TBD]] | NTP Server Deny | [[this memo]] {{serverdeny}} |
 
 
 --- back
