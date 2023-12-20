@@ -57,6 +57,8 @@ This document aims to provide extensions to the NTS Key Exchange sessions that a
 
 Throughout the text, the terms client and server will refer to those roles in an NTS Key Exchange session as specified in {{RFC8915}}. Please note that this means that the pool itself operates in both roles: As a server towards users of the pool, and as a client towards the downstream time sources.
 
+Where further specificity of the role of a participant is needed, we will use the term user to indicate a user of a pool, the term pool to indicate the pool itself, and downstream time source for the time servers that the pool delegates the actual providing of time to.
+
 {::boilerplate bcp14-tagged}
 
 # General pool architecture
@@ -132,12 +134,17 @@ MUST not be sent by a server. Server MAY at its discretion ignore the request fr
 
 # Security Considerations
 
+## Pool's position
+
 In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of all these sessions. Although this is a small additional risk, we consider this acceptable as the pool could already always assign sessions for a user to time servers it controls anyway.
 
 The fact that the pool also gets access to key material makes it less advisable to have a pool as a downstream time source for another pool, as this increases the number of actors with access to the key material even further.
 
 The design above does avoid sharing key material between all downstream time sources. As a consequence, a downstream time source in the pool will not be able to break confidentiality or authenticity of traffic with other downstream time sources of the pool. Furthermore, any traffic directly with the downstream time source has no key material involved that is known to the pool.
 
+## Error handling
+
+To avoid giving multiple downstream time sources access to the key material of the end user, it is important that the keys extracted from the TLS session between the user and the pool be sent to at most one downstream time source. If an error occurs after sending of the Fixed Key Request record, either with the TLS connection between the pool and the downstream time source, or by being explicitly reported by the downstream time source to the pool, the pool SHOULD return an error to the user. Retrying with a different downstream time source may unintentionally leave the user vulnerable to the provider of the originally selected downstream time source.
 
 # IANA Considerations
 
