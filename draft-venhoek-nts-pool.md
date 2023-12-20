@@ -50,7 +50,7 @@ NTS {{RFC8915}} provides authenticity and limited confidentiality for NTP {{RFC5
 This document aims to provide extensions to the NTS Key Exchange sessions that allow an implementation of a pool for NTS that
 
   - Is usable without changes to client,
-  - Avoids constrainging the downstream time source's cookie format,
+  - Avoids constraining the downstream time source's cookie format,
   - Avoids downstream time sources having potential access to all traffic.
 
 # Conventions and Definitions
