@@ -16,10 +16,10 @@ Abstract
    The aim of this document is to describe a proof of concept system for
    NTS pools that are able to be used by clients without any knowledge
    beyond plain NTS.  The work here focusses purely on creating an
-   intermediate nts-ke server that can be configured with the addresses
-   of multiple downstream servers and distribute load between them.  The
-   parts of pool operation dealing with managing the list of servers are
-   left out of scope for this work.
+   intermediate NTS Key Exchange server that can be configured with the
+   addresses of multiple downstream servers and distribute load between
+   them.  The parts of pool operation dealing with managing the list of
+   servers are left out of scope for this work.
 
 About This Document
 
@@ -129,13 +129,13 @@ Table of Contents
    Exchange service to the outside world.  This allows the pool to
    terminate the TLS connection and avoids having to distribute
    certificates to all downstream time servers.  However, that also
-   implies that the pool needs to extract the keys and somehow get valid
-   cookies for the selected downstream time server.
+   implies that the pool needs to extract the keys and get valid cookies
+   for the selected downstream time server.
 
    To solve this, we ask downstream servers to provide an extension of
    the NTS Key Exchange protocol that allows the pool to directly
    communicate the keys to the downstream server, instead of having the
-   downstream server extract this from the TLS Session.  The explicit
+   downstream server extract this from the TLS session.  The explicit
    communication of keys allows the pool to do the extraction from the
    TLS server whilst remaining oblivious to the cookie format of the
    downstream server.
@@ -158,9 +158,9 @@ Table of Contents
    0x4000) Critical bit: 0
 
    Indicates a desire to keep the TLS connection active for more than
-   one message exchange.  This can be used by a Pool to reuse
-   connections to downstream NTS-KE servers multiple times, reducing
-   load on both the pool and downstream servers.
+   one message exchange.  This can be used by a pool to reuse
+   connections to downstream NTS Key Exchange servers multiple times,
+   reducing load on both the pool and downstream servers.
 
    Client MUST send this record with a 0 sized body.  Client MUST NOT
    use Keep Alive unless the request contains a record type allowing the
@@ -234,8 +234,8 @@ Table of Contents
    When client is properly authenticated, the server SHOULD NOT perform
    Key Extraction for but rather use the keys provided by the client in
    the extension field.  This allows a pool to do key negotiation on
-   behalve of its users with the downstream NTS-KE servers, even though
-   it terminates the TLS connection.
+   behalve of its users with the downstream NTS Key Exchange servers,
+   even though it terminates the TLS connection.
 
    When used, the client MUST provide an AEAD Algorithm Negotiation
    record with precisely one algorithm, and a Next Protocol Negotiation
