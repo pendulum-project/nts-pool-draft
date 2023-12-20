@@ -3,7 +3,7 @@ title: "NTS extensions for enabling pools"
 abbrev: "NTS pools"
 category: info
 
-docname: draft-nts-pool-latest
+docname: draft-venhoek-nts-pool-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
