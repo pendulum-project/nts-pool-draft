@@ -1292,9 +1292,9 @@ Critical bit: 1<a href="#section-5.3-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-5.4-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
 Critical Bit: 1<a href="#section-5.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.4-2">When client is properly authenticated, the server <span class="bcp14">SHOULD</span> not perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">When client is properly authenticated, the server <span class="bcp14">SHOULD NOT</span> perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.4-3">When used, the client <span class="bcp14">MUST</span> provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes <span class="bcp14">MUST</span> be the C2S Key and the second set of N bytes <span class="bcp14">MUST</span> be the S2C key. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.4-4"><span class="bcp14">MUST</span> not be sent by a server. Server <span class="bcp14">SHOULD</span> treat extension field as unknown when sent by any client not authorized to make fixed key requests.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.4-4"><span class="bcp14">MUST NOT</span> be sent by a server. Server <span class="bcp14">SHOULD</span> treat extension field as unknown when sent by any client not authorized to make fixed key requests.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="serverdeny">
@@ -1306,7 +1306,7 @@ Critical Bit: 1<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 Critical Bit: 0<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.5-2">When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.<a href="#section-5.5-2" class="pilcrow">¶</a></p>
 <p id="section-5.5-3">A client <span class="bcp14">MAY</span> send multiple of these records if desired. The data in the record <span class="bcp14">SHOULD</span> match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.<a href="#section-5.5-3" class="pilcrow">¶</a></p>
-<p id="section-5.5-4"><span class="bcp14">MUST</span> not be sent by a server. Server <span class="bcp14">MAY</span> at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.5-4"><span class="bcp14">MUST NOT</span> be sent by a server. Server <span class="bcp14">MAY</span> at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

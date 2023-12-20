@@ -231,7 +231,7 @@ Table of Contents
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4002) Critical Bit: 1
 
-   When client is properly authenticated, the server SHOULD not perform
+   When client is properly authenticated, the server SHOULD NOT perform
    Key Extraction for but rather use the keys provided by the client in
    the extension field.  This allows a pool to do key negotiation on
    behalve of its users with the downstream NTS-KE servers, even though
@@ -245,7 +245,7 @@ Table of Contents
    bytes MUST be the C2S Key and the second set of N bytes MUST be the
    S2C key.  Clients MAY use Keep Alive in combination with this record.
 
-   MUST not be sent by a server.  Server SHOULD treat extension field as
+   MUST NOT be sent by a server.  Server SHOULD treat extension field as
    unknown when sent by any client not authorized to make fixed key
    requests.
 
@@ -265,7 +265,7 @@ Table of Contents
    Negotiation received in an earlier request from the same NTS Key
    Exchange server.
 
-   MUST not be sent by a server.  Server MAY at its discretion ignore
+   MUST NOT be sent by a server.  Server MAY at its discretion ignore
    the request from the client and still provide the given server in an
    NTPv4 Server Negotiation record.
 
