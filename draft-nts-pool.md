@@ -74,6 +74,8 @@ When supported by server and allowed for the request in question, the server MUS
 
 When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last reqeust or response respectively to use the connection.
 
+Once a Keep Alive record has been sent by a client, or honored by a server, the TLS connection over which it was sent MUST NOT be used for key extraction. Doing so anyway can result in reuse of keys and the may result in loss of confidentiality or authenticity of the resulting NTP exchanges.
+
 ## Supported Next Protocol List {#supportedprotocol}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4004)
 Critical bit: 1
