@@ -2,9 +2,9 @@
 
 
 
-Network Working Group                                         D. Venhoek
-Internet-Draft                                          Tweede Golf B.V.
-Intended status: Informational                          20 December 2023
+ntp                                                           D. Venhoek
+Internet-Draft                                          Tweede golf B.V.
+Intended status: Standards Track                        20 December 2023
 Expires: 22 June 2024
 
 
@@ -365,5 +365,5 @@ Acknowledgments
 Author's Address
 
    David Venhoek
-   Tweede Golf B.V.
+   Tweede golf B.V.
    Email: david@tweedegolf.com
