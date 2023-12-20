@@ -122,7 +122,11 @@ MUST not be sent by a server. Server MAY at its discretion ignore the request fr
 
 # Security Considerations
 
-TODO Security
+In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of all these sessions. Although this is a small additional risk, we consider this acceptable as the pool could already always assign sessions for a user to time servers it controls anyway.
+
+The fact that the pool also gets access to key material makes it less advisable to have a pool as a downstream time source for another pool, as this increases the number of actors with access to the key material even further.
+
+The design above does avoid sharing key material between all downstream time sources. As a consequence, a downstream time source in the pool will not be able to break confidentiality or authenticity of traffic with other downstream time sources of the pool. Furthermore, any traffic directly with the downstream time source has no key material involved that is known to the pool.
 
 
 # IANA Considerations
