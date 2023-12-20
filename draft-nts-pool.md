@@ -62,7 +62,7 @@ result in, we also introduce a record clients can use to indicate which downstre
 
 # New NTS record types
 
-## Keep Alive
+## Keep Alive {#keepalive}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4000)
 Critical bit: 0
 
@@ -74,7 +74,7 @@ When supported by server and allowed for the request in question, the server MUS
 
 When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last reqeust or response respectively to use the connection.
 
-## Supported Next Protocol List
+## Supported Next Protocol List {#supportedprotocol}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4004)
 Critical bit: 1
 
@@ -86,7 +86,7 @@ Server MUST ignore any client body sent, and MUST send in response a Supported N
 
 When included, the server MUST NOT negotiate a next protocol, aead algorithm or keys for this request.
 
-## Supported Algorithm List
+## Supported Algorithm List {#supportedalgorithm}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
 Critical bit: 1
 
@@ -98,7 +98,7 @@ Server MUST ignore any client body sent, and MUST send in response a Supported A
 
 When included, the server MUST NOT negotiate a next protocol, aead algorithm or keys for this request.
 
-## Fixed Key Request
+## Fixed Key Request {#fixedkey}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
 Critical Bit: 1
 
@@ -108,7 +108,7 @@ When used, the client MUST provide an AEAD Algorithm Negotiation record with pre
 
 MUST not be sent by a server. Server SHOULD treat extension field as unknown when sent by any client not authorized to make fixed key requests.
 
-## NTP Server Deny
+## NTP Server Deny {#serverdeny}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
 Critical Bit: 0
 
@@ -125,7 +125,15 @@ TODO Security
 
 # IANA Considerations
 
-This document has no IANA actions.
+IANA is requested to allocate the following entries in the Network Time Security Key Establishment Record Types registry {{RFC8915}}:
+
+| Record Type Number | Description | Reference |
+| --- | --- | --- |
+| [[TBD]] | Keep Alive | [[this memo]] {{keepalive}} |
+| [[TBD]] | Supported Next Protocol List | [[this memo]] {{keepalive}} |
+| [[TBD]] | Supported Algorithm List | [[this memo]] {{supportedalgorithm}} |
+| [[TBD]] | Fixed Key Request | [[this memo]] {{fixedkey}} |
+| [[TBD]] | NTP Server Deny | [[this memo]] {{serverdeny}} | 
 
 
 --- back
