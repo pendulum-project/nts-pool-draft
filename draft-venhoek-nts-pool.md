@@ -1,7 +1,7 @@
 ---
 title: "NTS extensions for enabling pools"
 abbrev: "NTS pools"
-category: info
+category: std
 
 docname: draft-venhoek-nts-pool-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
@@ -9,8 +9,8 @@ number:
 date:
 consensus: true
 v: 3
-# area: AREA
-# workgroup: WG Working Group
+area: INT
+workgroup: ntp
 keyword:
  - NTP
  - NTS
@@ -25,7 +25,7 @@ venue:
 author:
  -
     fullname: "David Venhoek"
-    organization: Tweede Golf B.V.
+    organization: Tweede golf B.V.
     email: "david@tweedegolf.com"
 
 normative:
