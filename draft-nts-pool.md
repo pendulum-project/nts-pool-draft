@@ -116,11 +116,11 @@ When included, the server MUST NOT negotiate a next protocol, aead algorithm or 
 Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
 Critical Bit: 1
 
-When client is properly authenticated, the server SHOULD not perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.
+When client is properly authenticated, the server SHOULD NOT perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.
 
 When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
 
-MUST not be sent by a server. Server SHOULD treat extension field as unknown when sent by any client not authorized to make fixed key requests.
+MUST NOT be sent by a server. Server SHOULD treat extension field as unknown when sent by any client not authorized to make fixed key requests.
 
 ## NTP Server Deny {#serverdeny}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
@@ -130,7 +130,7 @@ When provided by a client, indicates a desire to connect to a server other than 
 
 A client MAY send multiple of these records if desired. The data in the record SHOULD match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.
 
-MUST not be sent by a server. Server MAY at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.
+MUST NOT be sent by a server. Server MAY at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.
 
 # Security Considerations
 
