@@ -1141,24 +1141,43 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-keep-alive" class="internal xref">Keep Alive</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-supported-algorithm-list" class="internal xref">Supported Algorithm List</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-supported-next-protocol-lis" class="internal xref">Supported Next Protocol List</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-fixed-key-request" class="internal xref">Fixed Key Request</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-supported-algorithm-list" class="internal xref">Supported Algorithm List</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-ntp-server-deny" class="internal xref">NTP Server Deny</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-fixed-key-request" class="internal xref">Fixed Key Request</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-ntp-server-deny" class="internal xref">NTP Server Deny</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-pools-position" class="internal xref">Pool's position</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-error-handling" class="internal xref">Error handling</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
@@ -1174,7 +1193,20 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-1">
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
-    </h2>
+      </h2>
+<p id="section-1-1">NTS <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span> provides authenticity and limited confidentiality for NTP <span>[<a href="#RFC5905" class="cite xref">RFC5905</a>]</span>. However, the key exchange preceding the actual time exchange makes it hard to implement a pool for NTS supporting servers in a manner similar to the DNS resolution approach taken to provide the NTP Pool <span>[<a href="#Pool" class="cite xref">Pool</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document aims to provide extensions to the NTS Key Exchange sessions that allow an implementation of a pool for NTS that<a href="#section-1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-3.1">
+          <p id="section-1-3.1.1">Is usable without changes to client,<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-3.2">
+          <p id="section-1-3.2.1">Avoids constrainging the downstream time source's cookie format,<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-3.3">
+          <p id="section-1-3.3.1">Avoids downstream time sources having potential access to all traffic.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1183,10 +1215,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
       </h2>
 <p id="section-2-1">Throughout the text, the terms client and server will refer to those roles in an NTS Key Exchange session as specified in <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>. Please note that this means that the pool itself operates in both roles: As a server towards users of the pool, and as a client towards the downstream time sources.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+<p id="section-2-2">Where further specificity of the role of a participant is needed, we will use the term user to indicate a user of a pool, the term pool to indicate the pool itself, and downstream time source for the time servers that the pool delegates the actual providing of time to.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-2-2" class="pilcrow">¶</a></p>
+appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="general-pool-architecture">
@@ -1212,7 +1245,7 @@ result in, we also introduce a record clients can use to indicate which downstre
       <h2 id="name-new-nts-record-types">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-new-nts-record-types" class="section-name selfRef">New NTS record types</a>
       </h2>
-<div id="keep-alive">
+<div id="keepalive">
 <section id="section-5.1">
         <h3 id="name-keep-alive">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-keep-alive" class="section-name selfRef">Keep Alive</a>
@@ -1223,43 +1256,57 @@ Critical bit: 0<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">Client <span class="bcp14">MUST</span> send this record with a 0 sized body. Client <span class="bcp14">MUST NOT</span> use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1-4">When supported by server and allowed for the request in question, the server <span class="bcp14">MUST</span> include a Keep Alive record with 0 sized body in the response and keep the TLS connection active after the response to handle further requests from the client. A client <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <p id="section-5.1-5">When included in the request or response, the client respectively server <span class="bcp14">MAY</span>, contrary to the requirements in <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, send another request or response. Any TLS "close_notify" <span class="bcp14">SHALL</span> be sent only after the last reqeust or response respectively to use the connection.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1-6">Once a Keep Alive record has been sent by a client, or honored by a server, the TLS connection over which it was sent <span class="bcp14">MUST NOT</span> be used for key extraction. Doing so anyway can result in reuse of keys and the may result in loss of confidentiality or authenticity of the resulting NTP exchanges.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="supported-algorithm-list">
+<div id="supportedprotocol">
 <section id="section-5.2">
-        <h3 id="name-supported-algorithm-list">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-supported-algorithm-list" class="section-name selfRef">Supported Algorithm List</a>
+        <h3 id="name-supported-next-protocol-lis">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-supported-next-protocol-lis" class="section-name selfRef">Supported Next Protocol List</a>
         </h3>
-<p id="section-5.2-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
+<p id="section-5.2-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4004)
 Critical bit: 1<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">This record can be used by a pool to query downstream server about which AEAD algorithms the downstream server supports.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. A request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2-4">Server <span class="bcp14">MUST</span> ignore any client body sent, and <span class="bcp14">MUST</span> send in response a Supported Algorithm List record with as data a list of tuples of two 16 bit integers, the first giving a algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">This record can be used by a pool to query downstream servers about which next protocols they support.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. A request with this record <span class="bcp14">SHOULD NOT</span> inclue a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-4">Server <span class="bcp14">MUST</span> ignore any client body sent, and <span class="bcp14">MUST</span> send in response a Supported Next Protocol List record with as data a list of 16 bit integers, giving the protocol ID's the server supports.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
 <p id="section-5.2-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, aead algorithm or keys for this request.<a href="#section-5.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="fixed-key-request">
+<div id="supportedalgorithm">
 <section id="section-5.3">
-        <h3 id="name-fixed-key-request">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-fixed-key-request" class="section-name selfRef">Fixed Key Request</a>
+        <h3 id="name-supported-algorithm-list">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-supported-algorithm-list" class="section-name selfRef">Supported Algorithm List</a>
         </h3>
-<p id="section-5.3-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
-Critical Bit: 1<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">When client is properly authenticated, the server <span class="bcp14">SHOULD</span> not perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.3-3">When used, the client <span class="bcp14">MUST</span> provide an AEAD Algorithm Negotiation record with precisely one algorithm. The data in the record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes <span class="bcp14">MUST</span> be the C2S Key and the second set of N bytes <span class="bcp14">MUST</span> be the S2C key. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.3-4"><span class="bcp14">MUST</span> not be sent by a server. Server <span class="bcp14">SHOULD</span> treat extension field as unknown when sent by any client not authorized to make fixed key requests.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
+Critical bit: 1<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">This record can be used by a pool to query downstream servers about which AEAD algorithms they support.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. A request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.3-4">Server <span class="bcp14">MUST</span> ignore any client body sent, and <span class="bcp14">MUST</span> send in response a Supported Algorithm List record with as data a list of tuples of two 16 bit integers, the first giving a algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.3-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, aead algorithm or keys for this request.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="ntp-server-deny">
+<div id="fixedkey">
 <section id="section-5.4">
-        <h3 id="name-ntp-server-deny">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-ntp-server-deny" class="section-name selfRef">NTP Server Deny</a>
+        <h3 id="name-fixed-key-request">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-fixed-key-request" class="section-name selfRef">Fixed Key Request</a>
         </h3>
-<p id="section-5.4-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
-Critical Bit: 0<a href="#section-5.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.4-2">When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
-<p id="section-5.4-3">A client <span class="bcp14">MAY</span> send multiple of these records if desired. The data in the record <span class="bcp14">SHOULD</span> match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.4-4"><span class="bcp14">MUST</span> not be sent by a server. Server <span class="bcp14">MAY</span> at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.4-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
+Critical Bit: 1<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">When client is properly authenticated, the server <span class="bcp14">SHOULD</span> not perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.4-3">When used, the client <span class="bcp14">MUST</span> provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes <span class="bcp14">MUST</span> be the C2S Key and the second set of N bytes <span class="bcp14">MUST</span> be the S2C key. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.4-4"><span class="bcp14">MUST</span> not be sent by a server. Server <span class="bcp14">SHOULD</span> treat extension field as unknown when sent by any client not authorized to make fixed key requests.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="serverdeny">
+<section id="section-5.5">
+        <h3 id="name-ntp-server-deny">
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-ntp-server-deny" class="section-name selfRef">NTP Server Deny</a>
+        </h3>
+<p id="section-5.5-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
+Critical Bit: 0<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.5-2">When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.<a href="#section-5.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.5-3">A client <span class="bcp14">MAY</span> send multiple of these records if desired. The data in the record <span class="bcp14">SHOULD</span> match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.<a href="#section-5.5-3" class="pilcrow">¶</a></p>
+<p id="section-5.5-4"><span class="bcp14">MUST</span> not be sent by a server. Server <span class="bcp14">MAY</span> at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1269,7 +1316,24 @@ Critical Bit: 0<a href="#section-5.4-1" class="pilcrow">¶</a></p>
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">TODO Security<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div id="pools-position">
+<section id="section-6.1">
+        <h3 id="name-pools-position">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-pools-position" class="section-name selfRef">Pool's position</a>
+        </h3>
+<p id="section-6.1-1">In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of all these sessions. Although this is a small additional risk, we consider this acceptable as the pool could already always assign sessions for a user to time servers it controls anyway.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">The fact that the pool also gets access to key material makes it less advisable to have a pool as a downstream time source for another pool, as this increases the number of actors with access to the key material even further.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">The design above does avoid sharing key material between all downstream time sources. As a consequence, a downstream time source in the pool will not be able to break confidentiality or authenticity of traffic with other downstream time sources of the pool. Furthermore, any traffic directly with the downstream time source has no key material involved that is known to the pool.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="error-handling">
+<section id="section-6.2">
+        <h3 id="name-error-handling">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-error-handling" class="section-name selfRef">Error handling</a>
+        </h3>
+<p id="section-6.2-1">To avoid giving multiple downstream time sources access to the key material of the end user, it is important that the keys extracted from the TLS session between the user and the pool be sent to at most one downstream time source. If an error occurs after sending of the Fixed Key Request record, either with the TLS connection between the pool and the downstream time source, or by being explicitly reported by the downstream time source to the pool, the pool <span class="bcp14">SHOULD</span> return an error to the user. Retrying with a different downstream time source may unintentionally leave the user vulnerable to the provider of the originally selected downstream time source.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1277,30 +1341,94 @@ Critical Bit: 0<a href="#section-5.4-1" class="pilcrow">¶</a></p>
       <h2 id="name-iana-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">This document has no IANA actions.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">IANA is requested to allocate the following entries in the Network Time Security Key Establishment Record Types registry <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>:<a href="#section-7-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Record Type Number</th>
+            <th class="text-left" rowspan="1" colspan="1">Description</th>
+            <th class="text-left" rowspan="1" colspan="1">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
+            <td class="text-left" rowspan="1" colspan="1">Keep Alive</td>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#keepalive" class="auto internal xref">Section 5.1</a>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
+            <td class="text-left" rowspan="1" colspan="1">Supported Next Protocol List</td>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#keepalive" class="auto internal xref">Section 5.1</a>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
+            <td class="text-left" rowspan="1" colspan="1">Supported Algorithm List</td>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#supportedalgorithm" class="auto internal xref">Section 5.3</a>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
+            <td class="text-left" rowspan="1" colspan="1">Fixed Key Request</td>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#fixedkey" class="auto internal xref">Section 5.4</a>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
+            <td class="text-left" rowspan="1" colspan="1">NTP Server Deny</td>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#serverdeny" class="auto internal xref">Section 5.5</a>
+</td>
+          </tr>
+        </tbody>
+      </table>
 </section>
 </div>
-<div id="sec-normative-references">
 <section id="section-8">
-      <h2 id="name-normative-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-8.1">
+        <h3 id="name-normative-references">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8915">[RFC8915]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Franke, D.</span>, <span class="refAuthor">Sibold, D.</span>, <span class="refAuthor">Teichel, K.</span>, <span class="refAuthor">Dansarie, M.</span>, and <span class="refAuthor">R. Sundblad</span>, <span class="refTitle">"Network Time Security for the Network Time Protocol"</span>, <span class="seriesInfo">RFC 8915</span>, <span class="seriesInfo">DOI 10.17487/RFC8915</span>, <time datetime="2020-09" class="refDate">September 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8915">https://www.rfc-editor.org/rfc/rfc8915</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
 </div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="Pool">[Pool]</dt>
+        <dd>
+<span class="refTitle">"NTP Pool website"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.ntppool.org">https://www.ntppool.org</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5905">[RFC5905]</dt>
+      <dd>
+<span class="refAuthor">Mills, D.</span>, <span class="refAuthor">Martin, J., Ed.</span>, <span class="refAuthor">Burbank, J.</span>, and <span class="refAuthor">W. Kasch</span>, <span class="refTitle">"Network Time Protocol Version 4: Protocol and Algorithms Specification"</span>, <span class="seriesInfo">RFC 5905</span>, <span class="seriesInfo">DOI 10.17487/RFC5905</span>, <time datetime="2010-06" class="refDate">June 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5905">https://www.rfc-editor.org/rfc/rfc5905</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
 <div id="acknowledgments">
 <section id="appendix-A">
       <h2 id="name-acknowledgments">

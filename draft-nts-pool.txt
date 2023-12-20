@@ -72,16 +72,37 @@ Table of Contents
    4.  Client facilities for pools
    5.  New NTS record types
      5.1.  Keep Alive
-     5.2.  Supported Algorithm List
-     5.3.  Fixed Key Request
-     5.4.  NTP Server Deny
+     5.2.  Supported Next Protocol List
+     5.3.  Supported Algorithm List
+     5.4.  Fixed Key Request
+     5.5.  NTP Server Deny
    6.  Security Considerations
+     6.1.  Pool's position
+     6.2.  Error handling
    7.  IANA Considerations
-   8.  Normative References
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
+
+   NTS [RFC8915] provides authenticity and limited confidentiality for
+   NTP [RFC5905].  However, the key exchange preceding the actual time
+   exchange makes it hard to implement a pool for NTS supporting servers
+   in a manner similar to the DNS resolution approach taken to provide
+   the NTP Pool [Pool].
+
+   This document aims to provide extensions to the NTS Key Exchange
+   sessions that allow an implementation of a pool for NTS that
+
+   *  Is usable without changes to client,
+
+   *  Avoids constrainging the downstream time source's cookie format,
+
+   *  Avoids downstream time sources having potential access to all
+      traffic.
 
 2.  Conventions and Definitions
 
@@ -90,6 +111,11 @@ Table of Contents
    Please note that this means that the pool itself operates in both
    roles: As a server towards users of the pool, and as a client towards
    the downstream time sources.
+
+   Where further specificity of the role of a participant is needed, we
+   will use the term user to indicate a user of a pool, the term pool to
+   indicate the pool itself, and downstream time source for the time
+   servers that the pool delegates the actual providing of time to.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -153,13 +179,39 @@ Table of Contents
    request or response.  Any TLS "close_notify" SHALL be sent only after
    the last reqeust or response respectively to use the connection.
 
-5.2.  Supported Algorithm List
+   Once a Keep Alive record has been sent by a client, or honored by a
+   server, the TLS connection over which it was sent MUST NOT be used
+   for key extraction.  Doing so anyway can result in reuse of keys and
+   the may result in loss of confidentiality or authenticity of the
+   resulting NTP exchanges.
+
+5.2.  Supported Next Protocol List
+
+   Record Type Number: To be assigned by IANA (draft implementations:
+   0x4004) Critical bit: 1
+
+   This record can be used by a pool to query downstream servers about
+   which next protocols they support.
+
+   Client MUST send with no body.  Clients MAY use Keep Alive in
+   combination with this record.  A request with this record SHOULD NOT
+   inclue a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or
+   "Fixed Key Request" record.
+
+   Server MUST ignore any client body sent, and MUST send in response a
+   Supported Next Protocol List record with as data a list of 16 bit
+   integers, giving the protocol ID's the server supports.
+
+   When included, the server MUST NOT negotiate a next protocol, aead
+   algorithm or keys for this request.
+
+5.3.  Supported Algorithm List
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4001) Critical bit: 1
 
-   This record can be used by a pool to query downstream server about
-   which AEAD algorithms the downstream server supports.
+   This record can be used by a pool to query downstream servers about
+   which AEAD algorithms they support.
 
    Client MUST send with no body.  Clients MAY use Keep Alive in
    combination with this record.  A request with this record SHOULD NOT
@@ -174,7 +226,7 @@ Table of Contents
    When included, the server MUST NOT negotiate a next protocol, aead
    algorithm or keys for this request.
 
-5.3.  Fixed Key Request
+5.4.  Fixed Key Request
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4002) Critical Bit: 1
@@ -186,17 +238,18 @@ Table of Contents
    it terminates the TLS connection.
 
    When used, the client MUST provide an AEAD Algorithm Negotiation
-   record with precisely one algorithm.  The data in the record must
-   have length twice the key length N of the AEAD algorithm in the AEAD
-   Algorithm Negotiation record.  The first N bytes MUST be the C2S Key
-   and the second set of N bytes MUST be the S2C key.  Clients MAY use
-   Keep Alive in combination with this record.
+   record with precisely one algorithm, and a Next Protocol Negotiation
+   record with precisely one next protocol.  The data in the Fixed Key
+   Request record must have length twice the key length N of the AEAD
+   algorithm in the AEAD Algorithm Negotiation record.  The first N
+   bytes MUST be the C2S Key and the second set of N bytes MUST be the
+   S2C key.  Clients MAY use Keep Alive in combination with this record.
 
    MUST not be sent by a server.  Server SHOULD treat extension field as
    unknown when sent by any client not authorized to make fixed key
    requests.
 
-5.4.  NTP Server Deny
+5.5.  NTP Server Deny
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4003) Critical Bit: 0
@@ -218,13 +271,69 @@ Table of Contents
 
 6.  Security Considerations
 
-   TODO Security
+6.1.  Pool's position
+
+   In the pool design presented above, the pool effectively acts as a
+   man in the middle between the user and the ultimate time source
+   during the NTS Key Exchange portion of the session.  This means that
+   the pool has access to the key material of all these sessions.
+   Although this is a small additional risk, we consider this acceptable
+   as the pool could already always assign sessions for a user to time
+   servers it controls anyway.
+
+   The fact that the pool also gets access to key material makes it less
+   advisable to have a pool as a downstream time source for another
+   pool, as this increases the number of actors with access to the key
+   material even further.
+
+   The design above does avoid sharing key material between all
+   downstream time sources.  As a consequence, a downstream time source
+   in the pool will not be able to break confidentiality or authenticity
+   of traffic with other downstream time sources of the pool.
+   Furthermore, any traffic directly with the downstream time source has
+   no key material involved that is known to the pool.
+
+6.2.  Error handling
+
+   To avoid giving multiple downstream time sources access to the key
+   material of the end user, it is important that the keys extracted
+   from the TLS session between the user and the pool be sent to at most
+   one downstream time source.  If an error occurs after sending of the
+   Fixed Key Request record, either with the TLS connection between the
+   pool and the downstream time source, or by being explicitly reported
+   by the downstream time source to the pool, the pool SHOULD return an
+   error to the user.  Retrying with a different downstream time source
+   may unintentionally leave the user vulnerable to the provider of the
+   originally selected downstream time source.
 
 7.  IANA Considerations
 
-   This document has no IANA actions.
+   IANA is requested to allocate the following entries in the Network
+   Time Security Key Establishment Record Types registry [RFC8915]:
 
-8.  Normative References
+    +====================+================+===========================+
+    | Record Type Number | Description    | Reference                 |
+    +====================+================+===========================+
+    | [[TBD]]            | Keep Alive     | [[this memo]] Section 5.1 |
+    +--------------------+----------------+---------------------------+
+    | [[TBD]]            | Supported Next | [[this memo]] Section 5.1 |
+    |                    | Protocol List  |                           |
+    +--------------------+----------------+---------------------------+
+    | [[TBD]]            | Supported      | [[this memo]] Section 5.3 |
+    |                    | Algorithm List |                           |
+    +--------------------+----------------+---------------------------+
+    | [[TBD]]            | Fixed Key      | [[this memo]] Section 5.4 |
+    |                    | Request        |                           |
+    +--------------------+----------------+---------------------------+
+    | [[TBD]]            | NTP Server     | [[this memo]] Section 5.5 |
+    |                    | Deny           |                           |
+    +--------------------+----------------+---------------------------+
+
+                                  Table 1
+
+8.  References
+
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -239,6 +348,15 @@ Table of Contents
               Sundblad, "Network Time Security for the Network Time
               Protocol", RFC 8915, DOI 10.17487/RFC8915, September 2020,
               <https://www.rfc-editor.org/rfc/rfc8915>.
+
+8.2.  Informative References
+
+   [Pool]     "NTP Pool website", n.d., <https://www.ntppool.org>.
+
+   [RFC5905]  Mills, D., Martin, J., Ed., Burbank, J., and W. Kasch,
+              "Network Time Protocol Version 4: Protocol and Algorithms
+              Specification", RFC 5905, DOI 10.17487/RFC5905, June 2010,
+              <https://www.rfc-editor.org/rfc/rfc5905>.
 
 Acknowledgments
 
