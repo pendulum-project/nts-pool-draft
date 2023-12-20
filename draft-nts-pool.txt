@@ -4,8 +4,8 @@
 
 Network Working Group                                         D. Venhoek
 Internet-Draft                                          Tweede Golf B.V.
-Intended status: Informational                          15 December 2023
-Expires: 17 June 2024
+Intended status: Informational                          20 December 2023
+Expires: 22 June 2024
 
 
                    NTS extensions for enabling pools
@@ -48,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 June 2024.
+   This Internet-Draft will expire on 22 June 2024.
 
 Copyright Notice
 
@@ -87,6 +87,9 @@ Table of Contents
 
    Throughout the text, the terms client and server will refer to those
    roles in an NTS Key Exchange session as specified in [RFC8915].
+   Please note that this means that the pool itself operates in both
+   roles: As a server towards users of the pool, and as a client towards
+   the downstream time sources.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -112,6 +115,14 @@ Table of Contents
    downstream server.
 
 4.  Client facilities for pools
+
+   One challenge with a pool through NTS Key Exchange is that clients
+   that allow for explicit pool configuration do want to end up with
+   multiple independent time sources.  To ensure they won't have to do
+   multiple NTS Key Exchange sessions just to discard the result because
+   they already have the time server they result in, we also introduce a
+   record clients can use to indicate which downstream time servers they
+   don't want.
 
 5.  New NTS record types
 
