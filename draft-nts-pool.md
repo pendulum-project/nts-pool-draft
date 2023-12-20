@@ -106,7 +106,7 @@ Critical Bit: 1
 
 When client is properly authenticated, the server SHOULD not perform Key Extraction for but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalve of its users with the downstream NTS-KE servers, even though it terminates the TLS connection.
 
-When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm. The data in the record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
+When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
 
 MUST not be sent by a server. Server SHOULD treat extension field as unknown when sent by any client not authorized to make fixed key requests.
 
