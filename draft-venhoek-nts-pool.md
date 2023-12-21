@@ -75,6 +75,12 @@ In {{RFC8915}}, cookies are generated based on key material that is extracted fr
 
 One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a downstream time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid this, we also introduce a record that clients can use to indicate which downstream time servers they don't want, because they already have them.
 
+# Pool authentication
+
+The extensions proposed below allow a client to establish an NTS association with a server with arbitrary keys, not just those extracted from the TLS session. To discourage misuse, it is not desirable to allow arbitrary clients to do this.
+
+Therefore, a server supporting the Fixed Key Request record from {{fixedkey}} MUST implement authentication of clients using the Fixed Key Request record through TLS client certificates. Support MUST be disabled by default, and when enabled, MUST be limited to an explicitly configured list of clients.
+
 # New NTS record types
 
 ## Keep Alive {#keepalive}
