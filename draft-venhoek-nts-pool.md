@@ -27,6 +27,10 @@ author:
     fullname: "David Venhoek"
     organization: Tweede golf B.V.
     email: "david@tweedegolf.com"
+ -
+    fullname: "Folkert de Vries"
+    organization: Tweede golf B.V.
+    email: "folkert@tweedegolf.com"
 
 normative:
   RFC8915:
