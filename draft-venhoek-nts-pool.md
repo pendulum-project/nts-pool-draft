@@ -31,6 +31,10 @@ author:
     fullname: "Folkert de Vries"
     organization: Tweede golf B.V.
     email: "folkert@tweedegolf.com"
+ -
+    fullname: "Marc Schoolderman"
+    organization: Tweede golf B.V.
+    email: "marc@tweedegolf.com"
 
 normative:
   RFC8915:
@@ -91,7 +95,7 @@ Indicates a desire to keep the TLS connection active for more than one message e
 
 Client MUST send this record with a body of size 0. Client MUST NOT use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server SHOULD ignore any body for the Keep Alive record.
 
-When supported by server and allowed for the request in question, the server MUST include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client SHOULD ignore any body for the Keep Alive record.
+When supported by a server and allowed for the request in question, the server MUST include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client SHOULD ignore any body for the Keep Alive record.
 
 When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last request or response respectively to use the connection.
 
@@ -127,7 +131,7 @@ We include the algorithm key size in the response so that a pool does not itself
 Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
 Critical Bit: 1
 
-When client is properly authenticated, the server SHOULD NOT perform Key Extraction but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalf of its users with the downstream NTS Key Exchange servers, even though it terminates the TLS connection.
+When a client is properly authenticated, the server SHOULD NOT perform Key Extraction but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalf of its users with the downstream NTS Key Exchange servers, even though it terminates the TLS connection.
 
 When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
 
@@ -155,7 +159,7 @@ The design above does avoid sharing key material between all downstream time sou
 
 ## Error handling
 
-To avoid giving multiple downstream time sources access to the key material of the end user, it is important that the keys extracted from the TLS session between the user and the pool are sent to at most one downstream time source. If an error occurs after sending the Fixed Key Request record, either with the TLS connection between the pool and the downstream time source, or by being explicitly reported by the downstream time source to the pool, the pool SHOULD return an error to the user. Retrying with a different downstream time source may unintentionally leave the user vulnerable to the operator of the originally selected downstream time source.
+To avoid giving multiple downstream time sources access to the key material of the end user, it is important that the keys extracted from the TLS session between the user and the pool are sent to at most one downstream time source. If an error occurs after sending the Fixed Key Request record, either with the TLS connection between the pool and the downstream time source, or by being explicitly reported by the downstream time source to the pool, the pool SHOULD return an error to the user. Retrying with a different downstream time source during the same TLS session may unintentionally leave the user vulnerable to the operator of the originally selected downstream time source.
 
 # IANA Considerations
 
