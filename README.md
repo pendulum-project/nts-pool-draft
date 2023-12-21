@@ -2,10 +2,10 @@
 
 This is the working area for the individual Internet-Draft, "NTS extensions for enabling pools".
 
-* [Editor's Copy](https://pendulum-project.github.io/nts-pool-draft/#go.draft-nts-pool.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-nts-pool)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-nts-pool)
-* [Compare Editor's Copy to Individual Draft](https://pendulum-project.github.io/nts-pool-draft/#go.draft-nts-pool.diff)
+* [Editor's Copy](https://pendulum-project.github.io/nts-pool-draft/#go.draft-venhoek-nts-pool.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-venhoek-nts-pool)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-venhoek-nts-pool)
+* [Compare Editor's Copy to Individual Draft](https://pendulum-project.github.io/nts-pool-draft/#go.draft-venhoek-nts-pool.diff)
 
 
 ## Contributing
