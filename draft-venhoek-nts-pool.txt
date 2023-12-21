@@ -70,19 +70,20 @@ Table of Contents
    2.  Conventions and Definitions
    3.  General pool architecture
    4.  Client facilities for pools
-   5.  New NTS record types
-     5.1.  Keep Alive
-     5.2.  Supported Next Protocol List
-     5.3.  Supported Algorithm List
-     5.4.  Fixed Key Request
-     5.5.  NTP Server Deny
-   6.  Security Considerations
-     6.1.  Pool's position
-     6.2.  Error handling
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   5.  Pool authentication
+   6.  New NTS record types
+     6.1.  Keep Alive
+     6.2.  Supported Next Protocol List
+     6.3.  Supported Algorithm List
+     6.4.  Fixed Key Request
+     6.5.  NTP Server Deny
+   7.  Security Considerations
+     7.1.  Pool's position
+     7.2.  Error handling
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -155,9 +156,22 @@ Table of Contents
    which downstream time servers they don't want, because they already
    have them.
 
-5.  New NTS record types
+5.  Pool authentication
 
-5.1.  Keep Alive
+   The extensions proposed below allow a client to establish an NTS
+   association with a server with arbitrary keys, not just those
+   extracted from the TLS session.  To discourage misuse, it is not
+   desirable to allow arbitrary clients to do this.
+
+   Therefore, a server supporting the Fixed Key Request record from
+   Section 6.4 MUST implement authentication of clients using the Fixed
+   Key Request record through TLS client certificates.  Support MUST be
+   disabled by default, and when enabled, MUST be limited to an
+   explicitly configured list of clients.
+
+6.  New NTS record types
+
+6.1.  Keep Alive
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4000) Critical bit: 0
@@ -190,7 +204,7 @@ Table of Contents
    and may result in loss of confidentiality or authenticity of the
    resulting NTP exchanges.
 
-5.2.  Supported Next Protocol List
+6.2.  Supported Next Protocol List
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4004) Critical bit: 1
@@ -210,7 +224,7 @@ Table of Contents
    When included, the server MUST NOT negotiate a next protocol, AEAD
    algorithm, or keys for this request.
 
-5.3.  Supported Algorithm List
+6.3.  Supported Algorithm List
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4001) Critical bit: 1
@@ -238,7 +252,7 @@ Table of Contents
    This allows adoption of new AEAD algorithms without any software
    changes being needed in pool software.
 
-5.4.  Fixed Key Request
+6.4.  Fixed Key Request
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4002) Critical Bit: 1
@@ -261,7 +275,7 @@ Table of Contents
    field as unknown when sent by any client not authorized to make fixed
    key requests.
 
-5.5.  NTP Server Deny
+6.5.  NTP Server Deny
 
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4003) Critical Bit: 0
@@ -281,9 +295,9 @@ Table of Contents
    the request from the client and still provide the given server in an
    NTPv4 Server Negotiation record.
 
-6.  Security Considerations
+7.  Security Considerations
 
-6.1.  Pool's position
+7.1.  Pool's position
 
    In the pool design presented above, the pool effectively acts as a
    man in the middle between the user and the ultimate time source
@@ -305,7 +319,7 @@ Table of Contents
    Furthermore, any traffic directly with the downstream time source has
    no key material involved that is known to the pool.
 
-6.2.  Error handling
+7.2.  Error handling
 
    To avoid giving multiple downstream time sources access to the key
    material of the end user, it is important that the keys extracted
@@ -318,7 +332,7 @@ Table of Contents
    time source may unintentionally leave the user vulnerable to the
    operator of the originally selected downstream time source.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    IANA is requested to allocate the following entries in the Network
    Time Security Key Establishment Record Types registry [RFC8915]:
@@ -326,26 +340,26 @@ Table of Contents
     +====================+================+===========================+
     | Record Type Number | Description    | Reference                 |
     +====================+================+===========================+
-    | [[TBD]]            | Keep Alive     | [[this memo]] Section 5.1 |
+    | [[TBD]]            | Keep Alive     | [[this memo]] Section 6.1 |
     +--------------------+----------------+---------------------------+
-    | [[TBD]]            | Supported Next | [[this memo]] Section 5.1 |
+    | [[TBD]]            | Supported Next | [[this memo]] Section 6.1 |
     |                    | Protocol List  |                           |
     +--------------------+----------------+---------------------------+
-    | [[TBD]]            | Supported      | [[this memo]] Section 5.3 |
+    | [[TBD]]            | Supported      | [[this memo]] Section 6.3 |
     |                    | Algorithm List |                           |
     +--------------------+----------------+---------------------------+
-    | [[TBD]]            | Fixed Key      | [[this memo]] Section 5.4 |
+    | [[TBD]]            | Fixed Key      | [[this memo]] Section 6.4 |
     |                    | Request        |                           |
     +--------------------+----------------+---------------------------+
-    | [[TBD]]            | NTP Server     | [[this memo]] Section 5.5 |
+    | [[TBD]]            | NTP Server     | [[this memo]] Section 6.5 |
     |                    | Deny           |                           |
     +--------------------+----------------+---------------------------+
 
                                   Table 1
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -361,7 +375,7 @@ Table of Contents
               Protocol", RFC 8915, DOI 10.17487/RFC8915, September 2020,
               <https://www.rfc-editor.org/rfc/rfc8915>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [Pool]     "NTP Pool website", n.d., <https://www.ntppool.org>.
 
@@ -372,7 +386,8 @@ Table of Contents
 
 Acknowledgments
 
-   TODO acknowledge.
+   The authors thank Marlon Peters and Marc Schoolderman for their input
+   and discussions during the writing of this document.
 
 Authors' Addresses
 
