@@ -1244,7 +1244,7 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
       <h2 id="name-client-facilities-for-pools">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-client-facilities-for-pools" class="section-name selfRef">Client facilities for pools</a>
       </h2>
-<p id="section-4-1">One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a downstream time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid this, we also introduce a record that clients can use to indicate which downstream time servers they don't want, because they already have them.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a downstream time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid unneccessary NTS Key Exchange sessions, we also introduce a record that clients can use to indicate which downstream time servers they don't want, because they already have them.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pool-authentication">
@@ -1253,7 +1253,7 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-pool-authentication" class="section-name selfRef">Pool authentication</a>
       </h2>
 <p id="section-5-1">The extensions proposed below allow a client to establish an NTS association with a server with arbitrary keys, not just those extracted from the TLS session. To discourage misuse, it is not desirable to allow arbitrary clients to do this.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Therefore, a server supporting the Fixed Key Request record from <a href="#fixedkey" class="auto internal xref">Section 6.4</a> <span class="bcp14">MUST</span> implement authentication of clients using the Fixed Key Request record through TLS client certificates. Support <span class="bcp14">MUST</span> be disabled by default, and when enabled, <span class="bcp14">MUST</span> be limited to an explicitly configured list of clients.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-2">Therefore, a server supporting the Fixed Key Request record from <a href="#fixedkey" class="auto internal xref">Section 6.4</a> <span class="bcp14">MUST</span> authenticate clients using the Fixed Key Request record using TLS client certificates. Support <span class="bcp14">MUST</span> be disabled by default, and when enabled, <span class="bcp14">MUST</span> be limited to an explicitly configured list of clients.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="new-nts-record-types">
@@ -1299,7 +1299,7 @@ Critical bit: 1<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
 <p id="section-6.3-4">Server <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
 <p id="section-6.3-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, AEAD algorithm, or keys for this request.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
-<p id="section-6.3-6">We include algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithm's exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any software changes being needed in pool software.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
+<p id="section-6.3-6">We include the algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithms exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any changes being needed for the pool software.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fixedkey">
