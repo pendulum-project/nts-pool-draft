@@ -6,6 +6,7 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>NTS extensions for enabling pools</title>
 <meta content="David Venhoek" name="author">
+<meta content="Folkert de Vries" name="author">
 <meta content="
        The aim of this document is to describe a proof of concept system for NTS pools that are able to be used by clients without any knowledge beyond plain NTS. The work here focuses purely on creating an intermediate NTS Key Exchange server that can be configured with the addresses of multiple downstream servers and distribute load between them. The parts of pool operation dealing with managing the list of servers are left out of scope for this work. 
     " name="description">
@@ -1029,8 +1030,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <td class="right">December 2023</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Venhoek</td>
-<td class="center">Expires 22 June 2024</td>
+<td class="left">Venhoek &amp; Vries</td>
+<td class="center">Expires 23 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1043,16 +1044,20 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-venhoek-nts-pool-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-12-20" class="published">20 December 2023</time>
+<time datetime="2023-12-21" class="published">21 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-06-22">22 June 2024</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2024-06-23">23 June 2024</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">D. Venhoek</div>
+<div class="org">Tweede golf B.V.</div>
+</div>
+<div class="author">
+      <div class="author-name">F. D. Vries</div>
 <div class="org">Tweede golf B.V.</div>
 </div>
 </dd>
@@ -1093,7 +1098,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1183,7 +1188,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1198,7 +1203,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-1-2">This document aims to provide extensions to the NTS Key Exchange sessions that allow for an implementation of a pool for NTS that:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-3.1">
-          <p id="section-1-3.1.1">Is usable without changes to client,<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.1.1">is usable without changes to the client,<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-3.2">
           <p id="section-1-3.2.1">avoids constraining the downstream time source's cookie format,<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
@@ -1227,8 +1232,8 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
       <h2 id="name-general-pool-architecture">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-general-pool-architecture" class="section-name selfRef">General pool architecture</a>
       </h2>
-<p id="section-3-1">We propose a pool model where the pool provides an NTS Key Exchange service to the outside world. This allows the pool to terminate the TLS connection and avoids having to distribute certificates to all downstream time servers. However, that also implies that the pool needs to extract the keys and get valid cookies for the selected downstream time server.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">To solve this, we ask downstream servers to provide an extension of the NTS Key Exchange protocol that allows the pool to directly communicate the keys to the downstream server, instead of having the downstream server extract this from the TLS session. The explicit communication of keys allows the pool to do the extraction from the TLS server whilst remaining oblivious to the cookie format of the downstream server.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-1">We propose a pool model where the pool provides an NTS Key Exchange service to the outside world. A major advantage of this model is that it avoids having to distribute certificates to all downstream time servers. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, there is no direct TLS connection between the client and the selected downstream time service.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">In <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the downstream time server. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the server. The server uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. This way, the pool can remain oblivious to the cookie format of the downstream time server.<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="client-facilities-for-pools">
@@ -1236,8 +1241,7 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
       <h2 id="name-client-facilities-for-pools">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-client-facilities-for-pools" class="section-name selfRef">Client facilities for pools</a>
       </h2>
-<p id="section-4-1">One challenge with a pool through NTS Key Exchange is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. To ensure they won't have to do multiple NTS Key Exchange sessions just to discard the result because they already have the time server they
-result in, we also introduce a record clients can use to indicate which downstream time servers they don't want.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a downstream time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid this, we also introduce a record that clients can use to indicate which downstream time servers they don't want, because they already have them.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="new-nts-record-types">
@@ -1253,8 +1257,8 @@ result in, we also introduce a record clients can use to indicate which downstre
 <p id="section-5.1-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4000)
 Critical bit: 0<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Indicates a desire to keep the TLS connection active for more than one message exchange. This can be used by a pool to reuse connections to downstream NTS Key Exchange servers multiple times, reducing load on both the pool and downstream servers.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">Client <span class="bcp14">MUST</span> send this record with a 0 sized body. Client <span class="bcp14">MUST NOT</span> use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">When supported by server and allowed for the request in question, the server <span class="bcp14">MUST</span> include a Keep Alive record with 0 sized body in the response and keep the TLS connection active after the response to handle further requests from the client. A client <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">Client <span class="bcp14">MUST</span> send this record with a body of size 0. Client <span class="bcp14">MUST NOT</span> use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">When supported by server and allowed for the request in question, the server <span class="bcp14">MUST</span> include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <p id="section-5.1-5">When included in the request or response, the client respectively server <span class="bcp14">MAY</span>, contrary to the requirements in <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, send another request or response. Any TLS "close_notify" <span class="bcp14">SHALL</span> be sent only after the last request or response respectively to use the connection.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 <p id="section-5.1-6">Once a Keep Alive record has been sent by a client, or honored by a server, the TLS connection over which it was sent <span class="bcp14">MUST NOT</span> be used for key extraction. Doing so anyway can result in the reuse of keys and may result in loss of confidentiality or authenticity of the resulting NTP exchanges.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
 </section>
@@ -1267,8 +1271,8 @@ Critical bit: 0<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4004)
 Critical bit: 1<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">This record can be used by a pool to query downstream servers about which next protocols they support.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. A request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2-4">Server <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in response a Supported Next Protocol List record with as data a list of 16 bit integers, giving the protocol IDs the server supports.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-4">Server <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in response a Supported Next Protocol List record with as data a list of 16-bit integers, giving the protocol IDs the server supports.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
 <p id="section-5.2-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, AEAD algorithm, or keys for this request.<a href="#section-5.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1280,9 +1284,10 @@ Critical bit: 1<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.3-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
 Critical bit: 1<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.3-2">This record can be used by a pool to query downstream servers about which AEAD algorithms they support.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.3-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. A request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.3-4">Server <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in response a Supported Algorithm List record with as data a list of tuples of two 16 bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">Client <span class="bcp14">MUST</span> send with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<p id="section-5.3-4">Server <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
 <p id="section-5.3-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, AEAD algorithm, or keys for this request.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.3-6">We include algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithm's exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any software changes being needed in pool software.<a href="#section-5.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fixedkey">
@@ -1321,7 +1326,7 @@ Critical Bit: 0<a href="#section-5.5-1" class="pilcrow">¶</a></p>
         <h3 id="name-pools-position">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-pools-position" class="section-name selfRef">Pool's position</a>
         </h3>
-<p id="section-6.1-1">In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of all these sessions. Although this is a small additional risk, we consider this acceptable as the pool could already always assign sessions for a user to time servers it controls anyway.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of these sessions. Although this is a small additional risk, we consider this acceptable because the pool could already always assign sessions for a user to time servers it controls anyway.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">The fact that the pool also gets access to key material makes it less advisable to have a pool as a downstream time source for another pool, as this increases the number of actors with access to the key material even further.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.1-3">The design above does avoid sharing key material between all downstream time sources. As a consequence, a downstream time source in the pool will not be able to break confidentiality or authenticity of traffic with other downstream time sources of the pool. Furthermore, any traffic directly with the downstream time source has no key material involved that is known to the pool.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -1331,7 +1336,7 @@ Critical Bit: 0<a href="#section-5.5-1" class="pilcrow">¶</a></p>
         <h3 id="name-error-handling">
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-error-handling" class="section-name selfRef">Error handling</a>
         </h3>
-<p id="section-6.2-1">To avoid giving multiple downstream time sources access to the key material of the end user, it is important that the keys extracted from the TLS session between the user and the pool are sent to at most one downstream time source. If an error occurs after sending the Fixed Key Request record, either with the TLS connection between the pool and the downstream time source, or by being explicitly reported by the downstream time source to the pool, the pool <span class="bcp14">SHOULD</span> return an error to the user. Retrying with a different downstream time source may unintentionally leave the user vulnerable to the provider of the originally selected downstream time source.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-1">To avoid giving multiple downstream time sources access to the key material of the end user, it is important that the keys extracted from the TLS session between the user and the pool are sent to at most one downstream time source. If an error occurs after sending the Fixed Key Request record, either with the TLS connection between the pool and the downstream time source, or by being explicitly reported by the downstream time source to the pool, the pool <span class="bcp14">SHOULD</span> return an error to the user. Retrying with a different downstream time source may unintentionally leave the user vulnerable to the operator of the originally selected downstream time source.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1439,8 +1444,8 @@ Critical Bit: 0<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 </div>
 <div id="authors-addresses">
 <section id="appendix-B">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">David Venhoek</span></div>
@@ -1448,6 +1453,14 @@ Critical Bit: 0<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:david@tweedegolf.com" class="email">david@tweedegolf.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Folkert de Vries</span></div>
+<div dir="auto" class="left"><span class="org">Tweede golf B.V.</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:folkert@tweedegolf.com" class="email">folkert@tweedegolf.com</a>
 </div>
 </address>
 </section>
