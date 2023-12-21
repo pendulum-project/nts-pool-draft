@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-19T00:15:56.819114+00:00",
+  "timestamp": "2023-12-21T00:15:54.672818+00:00",
   "repo": "pendulum-project/nts-pool-draft",
   "labels": [
     {
@@ -50,5 +50,131 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOK6Dtvs5idHzP",
+      "title": "Corrections",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/1",
+      "state": "MERGED",
+      "author": "cikzh",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-12-20T10:16:13Z",
+      "updatedAt": "2023-12-20T10:20:01Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "b4d2addc6637b85f9cbdfb21bdc6f481762c82b2",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "corrections",
+      "headRefOid": "f9d46f20a6da95be152a9fbdd5ae36e3115813af",
+      "closedAt": "2023-12-20T10:20:01Z",
+      "mergedAt": "2023-12-20T10:20:00Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "80c5691de53dd548eb41f477e5c28aca585b03c2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOK6Dtvs5qujPQ",
+          "commit": {
+            "abbreviatedOid": "82bab69"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T10:17:59Z",
+          "updatedAt": "2023-12-20T10:17:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOK6Dtvs5idaMZ",
+      "title": "notes",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/2",
+      "state": "OPEN",
+      "author": "folkertdev",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "not a great way to review this, but I guess the best given the github interface. I'll review this with additional comments",
+      "createdAt": "2023-12-20T11:07:47Z",
+      "updatedAt": "2023-12-20T11:20:11Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "0aa7b04f84054080d9907144bea357a70f6f1e15",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "folkert-notes",
+      "headRefOid": "66a99d90dc9405b29b082e7d29dc62ac5a00cbe9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOK6Dtvs5qu42B",
+          "commit": {
+            "abbreviatedOid": "66a99d9"
+          },
+          "author": "folkertdev",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-20T11:09:26Z",
+          "updatedAt": "2023-12-20T11:20:11Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "this part was confusing to me. I think we want to establish a couple of facts here\r\n\r\n- we don't want to distribute certificates to all downstream time servers\r\n- that means, in practice, that we cannot have direct TLS connections between client and server\r\n- but NTS KE relies on that direct connection\r\n- that is a problem we need a solution for. We present one.\r\n\r\nso, idk, feel free to use this or rephrase in some different way",
+              "createdAt": "2023-12-20T11:09:27Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            },
+            {
+              "originalPosition": 23,
+              "body": "this sentence is weird. I think the important points are \r\n\r\n- the pool is designed to be stateless in that it does not know to which clients it gave which servers (this is a good thing!)\r\n- the client does not want to use the same time source multiple times\r\n\r\nthat requires a solution, we propose one.",
+              "createdAt": "2023-12-20T11:11:23Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "the final sentence is confusing, when would this come up? the pool randomly deciding it wants to refresh the connection?",
+              "createdAt": "2023-12-20T11:13:01Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            },
+            {
+              "originalPosition": 48,
+              "body": "I think we should make it explicit that this goes against the NTS spec",
+              "createdAt": "2023-12-20T11:13:22Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            },
+            {
+              "originalPosition": 60,
+              "body": "I think we should make it explicit that this goes against the NTS spec",
+              "createdAt": "2023-12-20T11:13:26Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            },
+            {
+              "originalPosition": 48,
+              "body": "also why go against the spec in this way? we could also say that such records are ignored and then we don't conflict with the spec.",
+              "createdAt": "2023-12-20T11:18:15Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            },
+            {
+              "originalPosition": 93,
+              "body": "maybe clarify? the idea is that the party running that server now knows your key material and could abuse that if they also controlled some other server?",
+              "createdAt": "2023-12-20T11:19:22Z",
+              "updatedAt": "2023-12-20T11:20:11Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
