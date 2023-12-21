@@ -179,4 +179,4 @@ IANA is requested to allocate the following entries in the Network Time Security
 # Acknowledgments
 {:numbered="false"}
 
-The authors thank Marlon Peters and Marc Schoolderman for their input and discussions during the writing of this document.
+The authors thank Marlon Peeters for their input and discussions during the writing of this document.
