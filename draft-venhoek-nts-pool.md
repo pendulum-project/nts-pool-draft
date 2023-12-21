@@ -63,14 +63,13 @@ Where further specificity of the role of a participant is needed, we will use th
 
 # General pool architecture
 
-We propose a pool model where the pool provides an NTS Key Exchange service to the outside world. A major advantage of this model is that it avoids having to distribute certificates to all downstream time servers.
+We propose a pool model where the pool provides an NTS Key Exchange service to the outside world. A major advantage of this model is that it avoids having to distribute certificates to all downstream time servers. Contrary to {{RFC8915}}, there is no direct TLS connection between the client and the selected downstream time service.
 
-Contrary to {{RFC8915}}, there is no direct TLS connection between the client and the selected downstream time server. In {{RFC8915}}, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the downstream time server. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the server. The server uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. The pool can remain oblivious to the cookie format of the downstream time server.
+In {{RFC8915}}, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the downstream time server. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the server. The server uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. This way, the pool can remain oblivious to the cookie format of the downstream time server.
 
 # Client facilities for pools
 
-One challenge with a pool through ??? NTS Key Exchange is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. To ensure they won't have to do multiple NTS Key Exchange sessions just to discard the result because they already have the time server they
-result in, we also introduce a record that clients can use to indicate which downstream time servers they don't want.
+One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a downstream time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid this, we also introduce a record that clients can use to indicate which downstream time servers they don't want, because they already have them.
 
 # New NTS record types
 
@@ -84,7 +83,7 @@ Client MUST send this record with a body of size 0. Client MUST NOT use Keep Ali
 
 When supported by server and allowed for the request in question, the server MUST include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client SHOULD ignore any body for the Keep Alive record.
 
-When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last request or response respectively to ??? use the connection.
+When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last request or response respectively to use the connection.
 
 Once a Keep Alive record has been sent by a client, or honored by a server, the TLS connection over which it was sent MUST NOT be used for key extraction. Doing so anyway can result in the reuse of keys and may result in loss of confidentiality or authenticity of the resulting NTP exchanges.
 
@@ -94,7 +93,7 @@ Critical bit: 1
 
 This record can be used by a pool to query downstream servers about which next protocols they support.
 
-Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. A request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record. (this is also in conflict with the NTS spec!)
+Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. Contrary to {{RFC8915}}, a request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
 
 Server MUST ignore any client body sent and MUST send in response a Supported Next Protocol List record with as data a list of 16-bit integers, giving the protocol IDs the server supports.
 
@@ -106,19 +105,19 @@ Critical bit: 1
 
 This record can be used by a pool to query downstream servers about which AEAD algorithms they support.
 
-Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. A request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record. (this is also in conflict with the NTS spec!)
+Client MUST send with no body. Clients MAY use Keep Alive in combination with this record. Contrary to {{RFC8915}}, a request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
 
 Server MUST ignore any client body sent and MUST send in response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.
 
-(maybe clarify why that key length is sent over the wire? I keep forgetting why that is useful)
-
 When included, the server MUST NOT negotiate a next protocol, AEAD algorithm, or keys for this request.
+
+We include algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithm's exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any software changes being needed in pool software.
 
 ## Fixed Key Request {#fixedkey}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
 Critical Bit: 1
 
-When client is properly authenticated, the server SHOULD NOT perform Key Extraction but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalf of its users with the downstream NTS Key Exchange servers, even though it terminates the TLS connection. (is "terminates" a technical term here? as in it is the opposite for "forwards" or something?)
+When client is properly authenticated, the server SHOULD NOT perform Key Extraction but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalf of its users with the downstream NTS Key Exchange servers, even though it terminates the TLS connection.
 
 When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
 
@@ -138,9 +137,9 @@ MUST NOT be sent by a server. Server MAY at its discretion ignore the request fr
 
 ## Pool's position
 
-In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of both of these sessions. Although this is a small additional risk, we consider this acceptable because the pool could already always assign sessions for a user to time servers it controls anyway.
+In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of these sessions. Although this is a small additional risk, we consider this acceptable because the pool could already always assign sessions for a user to time servers it controls anyway.
 
-The fact that the pool also gets access to key material makes it less advisable to have a pool as a downstream time source for another pool, because this increases the number of actors with access to the key material even further.
+The fact that the pool also gets access to key material makes it less advisable to have a pool as a downstream time source for another pool, as this increases the number of actors with access to the key material even further.
 
 The design above does avoid sharing key material between all downstream time sources. As a consequence, a downstream time source in the pool will not be able to break confidentiality or authenticity of traffic with other downstream time sources of the pool. Furthermore, any traffic directly with the downstream time source has no key material involved that is known to the pool.
 
