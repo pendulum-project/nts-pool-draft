@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-21T00:15:54.672818+00:00",
+  "timestamp": "2023-12-24T00:16:56.296573+00:00",
   "repo": "pendulum-project/nts-pool-draft",
   "labels": [
     {
@@ -58,7 +58,7 @@
       "url": "https://github.com/pendulum-project/nts-pool-draft/pull/1",
       "state": "MERGED",
       "author": "cikzh",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -84,7 +84,7 @@
             "abbreviatedOid": "82bab69"
           },
           "author": "davidv1992",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2023-12-20T10:17:59Z",
@@ -98,21 +98,21 @@
       "id": "PR_kwDOK6Dtvs5idaMZ",
       "title": "notes",
       "url": "https://github.com/pendulum-project/nts-pool-draft/pull/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "folkertdev",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "not a great way to review this, but I guess the best given the github interface. I'll review this with additional comments",
       "createdAt": "2023-12-20T11:07:47Z",
-      "updatedAt": "2023-12-20T11:20:11Z",
+      "updatedAt": "2023-12-21T09:27:00Z",
       "baseRepository": "pendulum-project/nts-pool-draft",
       "baseRefName": "main",
       "baseRefOid": "0aa7b04f84054080d9907144bea357a70f6f1e15",
       "headRepository": "pendulum-project/nts-pool-draft",
       "headRefName": "folkert-notes",
       "headRefOid": "66a99d90dc9405b29b082e7d29dc62ac5a00cbe9",
-      "closedAt": null,
+      "closedAt": "2023-12-21T09:27:00Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -124,7 +124,7 @@
             "abbreviatedOid": "66a99d9"
           },
           "author": "folkertdev",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2023-12-20T11:09:26Z",
@@ -173,6 +173,178 @@
               "updatedAt": "2023-12-20T11:20:11Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOK6Dtvs5q1eBW",
+          "commit": {
+            "abbreviatedOid": "66a99d9"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-21T07:50:08Z",
+          "updatedAt": "2023-12-21T07:50:09Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "We still need to specify that\r\na) the close notify must not be sent after the request/response\r\nb) should still be sent once everyone is done with the connection. A pool may very well have a reason to drop a connection at some point, and it should do that neatly (and so should the downstream time source).",
+              "createdAt": "2023-12-21T07:50:09Z",
+              "updatedAt": "2023-12-21T07:50:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOK6Dtvs5q1etT",
+          "commit": {
+            "abbreviatedOid": "66a99d9"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-21T07:52:29Z",
+          "updatedAt": "2023-12-21T07:52:29Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "Because  I do not want to require this, so we still need to go against the spec anyway, and this significantly simplifies the required behaviour.",
+              "createdAt": "2023-12-21T07:52:29Z",
+              "updatedAt": "2023-12-21T07:52:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOK6Dtvs5q1fSl",
+          "commit": {
+            "abbreviatedOid": "66a99d9"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-21T07:54:27Z",
+          "updatedAt": "2023-12-21T07:54:27Z",
+          "comments": [
+            {
+              "originalPosition": 74,
+              "body": "Terminating a connection is standard language for being the endpoint of a connection. Similar language is also used e.g. when letting a party like cloudflare handle TLS handshakes for you.",
+              "createdAt": "2023-12-21T07:54:27Z",
+              "updatedAt": "2023-12-21T07:54:27Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOK6Dtvs5ii0Np",
+      "title": "Process comments folkert",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/3",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-12-21T07:59:30Z",
+      "updatedAt": "2023-12-21T08:00:05Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "0aa7b04f84054080d9907144bea357a70f6f1e15",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "process-comments-folkert",
+      "headRefOid": "7d375f521c90e0abfd6226a345aa7c79f7c99b92",
+      "closedAt": "2023-12-21T08:00:04Z",
+      "mergedAt": "2023-12-21T08:00:04Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "d2793f5a639dc9f1a2936af5a5392e610367f0ad"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOK6Dtvs5ijhEj",
+      "title": "Update draft-venhoek-nts-pool.md",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/4",
+      "state": "MERGED",
+      "author": "squell",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-12-21T10:04:42Z",
+      "updatedAt": "2023-12-21T10:12:29Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "b15556fa3c7789494df3c208d2f0db0850383d18",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "marc-patch-1",
+      "headRefOid": "6d0203cbca4c81a155fa2f8578baeea1aa01193a",
+      "closedAt": "2023-12-21T10:12:29Z",
+      "mergedAt": "2023-12-21T10:12:29Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "0aeee5b2f1f71c0d6dad6f36903586308207f4a8"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOK6Dtvs5q2dJ5",
+          "commit": {
+            "abbreviatedOid": "6d0203c"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-21T10:12:25Z",
+          "updatedAt": "2023-12-21T10:12:25Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOK6Dtvs5ijwij",
+      "title": "Fixed acknowledgements",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/5",
+      "state": "MERGED",
+      "author": "cikzh",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-12-21T10:47:55Z",
+      "updatedAt": "2023-12-21T10:55:48Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "2e1bc1bfdc47d5eb1dff4420d98269e23b742a03",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "acknowledgements-fix",
+      "headRefOid": "30ab028d5703c8a7dad94fe3aaf82c504132e649",
+      "closedAt": "2023-12-21T10:55:48Z",
+      "mergedAt": "2023-12-21T10:55:48Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "f99f212d4682436cd299a2454275436526a6baed"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOK6Dtvs5q2vIF",
+          "commit": {
+            "abbreviatedOid": "30ab028"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-21T10:55:39Z",
+          "updatedAt": "2023-12-21T10:55:39Z",
+          "comments": []
         }
       ]
     }
