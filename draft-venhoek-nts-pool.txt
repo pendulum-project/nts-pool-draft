@@ -5,8 +5,8 @@
 ntp                                                           D. Venhoek
 Internet-Draft                                               F. D. Vries
 Intended status: Standards Track                         M. Schoolderman
-Expires: 23 June 2024                                   Tweede golf B.V.
-                                                        21 December 2023
+Expires: 7 May 2025                                     Tweede golf B.V.
+                                                         3 November 2024
 
 
                    NTS extensions for enabling pools
@@ -49,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 June 2024.
+   This Internet-Draft will expire on 7 May 2025.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -144,6 +144,10 @@ Table of Contents
    connection with the pool) to generate cookies.  This way, the pool
    can remain oblivious to the cookie format of the downstream time
    server.
+
+   The pool MUST ensure that the response sent to the client includes an
+   NTPv4 Server Negotiation record as specified in Section 4.1.7 of
+   [RFC8915].
 
 4.  Client facilities for pools
 
@@ -289,7 +293,7 @@ Table of Contents
 
    A client MAY send multiple of these records if desired.  The data in
    the record SHOULD match that given through an NTPv4 Server
-   Negotiation received in an earlier request from the same NTS Key
+   Negotiation received in an earlier response from the same NTS Key
    Exchange server.
 
    MUST NOT be sent by a server.  Server MAY at its discretion ignore
