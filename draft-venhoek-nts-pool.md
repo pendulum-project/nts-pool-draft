@@ -75,6 +75,8 @@ We propose a pool model where the pool provides an NTS Key Exchange service to t
 
 In {{RFC8915}}, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the downstream time server. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the server. The server uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. This way, the pool can remain oblivious to the cookie format of the downstream time server.
 
+The pool MUST ensure that the response sent to the client includes an NTPv4 Server Negotiation record as specified in {{Section 4.1.7 of RFC8915}}.
+
 # Client facilities for pools
 
 One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a downstream time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid unneccessary NTS Key Exchange sessions, we also introduce a record that clients can use to indicate which downstream time servers they don't want, because they already have them.
@@ -143,7 +145,7 @@ Critical Bit: 0
 
 When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.
 
-A client MAY send multiple of these records if desired. The data in the record SHOULD match that given through an NTPv4 Server Negotiation received in an earlier request from the same NTS Key Exchange server.
+A client MAY send multiple of these records if desired. The data in the record SHOULD match that given through an NTPv4 Server Negotiation received in an earlier response from the same NTS Key Exchange server.
 
 MUST NOT be sent by a server. Server MAY at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.
 
