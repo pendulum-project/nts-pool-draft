@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-03T00:21:51.035800+00:00",
+  "timestamp": "2024-11-05T00:19:43.232403+00:00",
   "repo": "pendulum-project/nts-pool-draft",
   "labels": [
     {
@@ -344,6 +344,48 @@
           "body": "",
           "createdAt": "2023-12-21T10:55:39Z",
           "updatedAt": "2023-12-21T10:55:39Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOK6Dtvs6AuMzs",
+      "title": "Require the pool to include a server negotiation record in its response",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/6",
+      "state": "MERGED",
+      "author": "rnijveld",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-11-03T11:00:57Z",
+      "updatedAt": "2024-11-03T11:02:07Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "f99f212d4682436cd299a2454275436526a6baed",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "rnijveld-patch-1",
+      "headRefOid": "0404f2092bb91569080539982ff9d749f5579bfa",
+      "closedAt": "2024-11-03T11:02:07Z",
+      "mergedAt": "2024-11-03T11:02:07Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "fe0bbb979b73c2d593c499b567a261df0faac82a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOK6Dtvs6PwZj5",
+          "commit": {
+            "abbreviatedOid": "0404f20"
+          },
+          "author": "davidv1992",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-03T11:02:03Z",
+          "updatedAt": "2024-11-03T11:02:03Z",
           "comments": []
         }
       ]
