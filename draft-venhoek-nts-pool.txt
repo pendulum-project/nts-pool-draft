@@ -186,10 +186,10 @@ Table of Contents
    connections to downstream NTS Key Exchange servers multiple times,
    reducing load on both the pool and downstream servers.
 
-   Client MUST send this record with a body of size 0.  Client MUST NOT
-   use Keep Alive unless the request contains a record type allowing the
-   use of Keep Alive.  Within this specification, that is limited to the
-   Supported Protocol List and Fixed Key Request records.  A server
+   A client MUST send this record with a body of size 0.  A client MUST
+   NOT use Keep Alive unless the request contains a record type allowing
+   the use of Keep Alive.  Within this specification, that is limited to
+   the Supported Protocol List and Fixed Key Request records.  A server
    SHOULD ignore any body for the Keep Alive record.
 
    When supported by a server and allowed for the request in question,
@@ -217,14 +217,15 @@ Table of Contents
    This record can be used by a pool to query downstream servers about
    which next protocols they support.
 
-   Client MUST send with no body.  Clients MAY use Keep Alive in
-   combination with this record.  Contrary to [RFC8915], a request with
-   this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD
-   Algorithm Negotiation" or "Fixed Key Request" record.
+   A client MUST send this record with no body.  Clients MAY use Keep
+   Alive in combination with this record.  Contrary to [RFC8915], a
+   request with this record SHOULD NOT include a "Next Protocol
+   Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request"
+   record.
 
-   Server MUST ignore any client body sent and MUST send in response a
-   Supported Next Protocol List record with as data a list of 16-bit
-   integers, giving the protocol IDs the server supports.
+   Servers MUST ignore any client body sent and MUST send in the
+   response a Supported Next Protocol List record with as data a list of
+   16-bit integers, giving the protocol IDs the server supports.
 
    When included, the server MUST NOT negotiate a next protocol, AEAD
    algorithm, or keys for this request.
@@ -237,15 +238,17 @@ Table of Contents
    This record can be used by a pool to query downstream servers about
    which AEAD algorithms they support.
 
-   Client MUST send with no body.  Clients MAY use Keep Alive in
-   combination with this record.  Contrary to [RFC8915], a request with
-   this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD
-   Algorithm Negotiation" or "Fixed Key Request" record.
+   A client MUST send this record with no body.  Clients MAY use Keep
+   Alive in combination with this record.  Contrary to [RFC8915], a
+   request with this record SHOULD NOT include a "Next Protocol
+   Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request"
+   record.
 
-   Server MUST ignore any client body sent and MUST send in response a
-   Supported Algorithm List record with as data a list of tuples of two
-   16-bit integers, the first giving an algorithm ID for the AEAD and
-   the second giving the length of the key for that algorithm ID.
+   Servers MUST ignore any client body sent and MUST send in the
+   response a Supported Algorithm List record with as data a list of
+   tuples of two 16-bit integers, the first giving an algorithm ID for
+   the AEAD and the second giving the length of the key for that
+   algorithm ID.
 
    When included, the server MUST NOT negotiate a next protocol, AEAD
    algorithm, or keys for this request.
@@ -255,7 +258,7 @@ Table of Contents
    their key sizes are.  Instead, it can use the provided key length
    when extracting keys from the TLS connection between end user and
    pool.  This allows adoption of new AEAD algorithms without any
-   changes being needed for the pool software.
+   changes to the pool software.
 
 6.4.  Fixed Key Request
 
