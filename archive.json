@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-30T00:19:17.475863+00:00",
+  "timestamp": "2025-06-15T00:28:08.937845+00:00",
   "repo": "pendulum-project/nts-pool-draft",
   "labels": [
     {
@@ -389,6 +389,62 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOK6Dtvs6aNStJ",
+      "title": "Minor text flow updates correcting somewhat clunky grammar.",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/7",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-06-12T12:24:36Z",
+      "updatedAt": "2025-06-12T12:55:31Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "1467795a38836715dd757fa434c2d89fc70d493c",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "minor-textual-changes",
+      "headRefOid": "906726a765b7877a93a38c9884e8c3447a6d206c",
+      "closedAt": "2025-06-12T12:55:31Z",
+      "mergedAt": "2025-06-12T12:55:31Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "50b5d9b6e996d7af8e5dfeee893c9d32fd160b6d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOK6Dtvs6aNYka",
+      "title": "Updated upload-artifact to v4",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/8",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-06-12T12:32:39Z",
+      "updatedAt": "2025-06-12T12:34:48Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "fe0bbb979b73c2d593c499b567a261df0faac82a",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "update-ci",
+      "headRefOid": "7b5b83e43436bc44ac1f42230907696839f17d5b",
+      "closedAt": "2025-06-12T12:34:48Z",
+      "mergedAt": "2025-06-12T12:34:48Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "1467795a38836715dd757fa434c2d89fc70d493c"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
