@@ -37,6 +37,7 @@ author:
     email: "marc@tweedegolf.com"
 
 normative:
+  RFC8446:
   RFC8915:
 
 informative:
@@ -75,19 +76,29 @@ We propose a pool model where the pool provides an NTS Key Exchange service to t
 
 In {{RFC8915}}, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the time source. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the server. The server uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. This way, the pool can remain oblivious to the cookie format of the time source.
 
-The pool MUST ensure that the response sent to the client includes an NTPv4 Server Negotiation record as specified in {{Section 4.1.7 of RFC8915}}.
+# Communication between the pool and time sources
 
-# Client facilities for pools
+To facilitate communication between the pool and the time sources, 4 new NTS records are defined in {{records}}. Together these records provide a way for the pool to provide key exchange services to clients on behalf of the time sources.
 
-One challenge with getting multiple time sources from a single NTS Key Exchange server is that clients that allow for explicit pool configuration want to end up with multiple independent time sources. Without additional support, a user of a pool might receive a time source it already has from an NTS Key Exchange session, resulting in that session being a waste of time. To avoid unneccessary NTS Key Exchange sessions, we also introduce a record that clients can use to indicate which time sources they don't want, because they already have them.
+The Supported Next Protocol List ({{supportedprotocol}}) and Supported Algorithm List ({{supportedalgorithm}}) records allow the pool to ask a time source which protocols and algorithms it supports. This information can be requested by the pool at any time, and can be cached for short periods of time to improve efficiency.
 
-# Pool authentication
+Using knowledge of a time source's supported protocols and algorithms, the pool can then handle client connections for that time source, using the clients indicated desires to choose a concrete next protocol and AEAD algorithm. The pool can then extract the keys from the TLS connection and use the Fixed Key record ({{fixedkey}}) to request cookies for these keys from the time source.
 
-The extensions proposed below allow a client to establish an NTS association with a server with arbitrary keys, not just those extracted from the TLS session. To discourage misuse, it is not desirable to allow arbitrary clients to do this.
+As it is wasteful to setup a new TLS session between the pool and the time source for each of these interactions. To facilitate reuse of the TLS sessions, we further introduce the Keep Alive record ({{keepalive}}). This record allows the pool to indicate to the time source a desire to keep the session alive for more than a single request-response interaction.
 
-Therefore, a server supporting the Fixed Key Request record from {{fixedkey}} MUST authenticate clients using the Fixed Key Request record using TLS client certificates. Support MUST be disabled by default, and when enabled, MUST be limited to an explicitly configured list of clients.
+## Authenticating the pool to time sources {#poolauth}
 
-# New NTS record types
+Allowing arbitrary clients to keep connections alive for more that a single request-response interaction could open up the server to denial of service due to resource exhaustion. To prevent this, a pool wishing to use the keep alive functionality MUST authenticate itself to the time source using a TLS Client Authentication as defined in {{RFC8446}}. Time sources MUST check that this authentication was successful, and that the requestor is on the list of requestors allowed to use the keep alive mechanism. By default, the list of requestors allowed to use the keep alive mechanism MUST be empty
+
+Furthermore, time sources MAY choose to also restrict the Fixed Key, Supported Next Protocol List and Supported Algorithm List to authenticated clients. If this choice is made, it is suggested that the server treat these records as unrecognized critical records on unauthenticated client's connections.
+
+# Communication between clients and the pool
+
+A client requesting time from the pool can make a normal NTS Key Exchange request to the pool. In the response to the client the pool needs to tell which NTP server is to be used to get the time. This can be done through the already existing NTP Server Record. However, the pool needs to ensure it is present, and therefore MUST add such a record to the response unless one is already provided by the time source.
+
+Clients that are aware they are talking to a pool may want to get multiple independent time sources from that pool. For this, they need to be able to tell the pool which time sources they already have, otherwise they might get a time source that they are already talking to. To achieve this, a client can use the NTP Server Deny record ({{serverdeny}}) to indicate it would rather not receive a particular server. Clients MUST use the precise name given by the pool in a previous NTP Server record, otherwise the pool may not recognize which time source the client is referring to.
+
+# New NTS record types {#records}
 
 ## Keep Alive {#keepalive}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4000)
@@ -97,7 +108,7 @@ Indicates a desire to keep the TLS connection active for more than one message e
 
 A client MUST send this record with a body of size 0. A client MUST NOT use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server SHOULD ignore any body for the Keep Alive record.
 
-When supported by a server and allowed for the request in question, the server MUST include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client SHOULD ignore any body for the Keep Alive record.
+When supported by a server and allowed for the request in question, the server MAY include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client SHOULD ignore any body for the Keep Alive record. As keeping a connection active requires additional resources on the server, a server SHOULD NOT respond with a Keep Alive record to unauthenticated clients.
 
 When included in the request or response, the client respectively server MAY, contrary to the requirements in {{RFC8915}}, send another request or response. Any TLS "close_notify" SHALL be sent only after the last request or response respectively to use the connection.
 
@@ -111,7 +122,7 @@ This record can be used by a pool to query time sources about which next protoco
 
 A client MUST send this record with no body. Clients MAY use Keep Alive in combination with this record. Contrary to {{RFC8915}}, a request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
 
-Servers MUST ignore any client body sent and MUST send in the response a Supported Next Protocol List record with as data a list of 16-bit integers, giving the protocol IDs the server supports.
+Servers MUST ignore any client body sent and MUST send in the response a Supported Next Protocol List record with as data a list of 16-bit integers, giving the protocol IDs the server supports. A server MAY treat this record as unknown for clients that are not authenticated as described in {{poolauth}}.
 
 When included, the server MUST NOT negotiate a next protocol, AEAD algorithm, or keys for this request.
 
@@ -123,7 +134,7 @@ This record can be used by a pool to query time sources about which AEAD algorit
 
 A client MUST send this record with no body. Clients MAY use Keep Alive in combination with this record. Contrary to {{RFC8915}}, a request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
 
-Servers MUST ignore any client body sent and MUST send in the response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID.
+Servers MUST ignore any client body sent and MUST send in the response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID. A server MAY treat this record as unknown for clients that are not authenticated as described in {{poolauth}}.
 
 When included, the server MUST NOT negotiate a next protocol, AEAD algorithm, or keys for this request.
 
@@ -137,7 +148,7 @@ When a client is properly authenticated, the server SHOULD NOT perform Key Extra
 
 When used, the client MUST provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes MUST be the C2S Key and the second set of N bytes MUST be the S2C key. Clients MAY use Keep Alive in combination with this record.
 
-MUST NOT be sent by a server. Server SHOULD treat the extension field as unknown when sent by any client not authorized to make fixed key requests.
+This record MUST NOT be sent by a server. A server MAY treat this record as unknown for clients that are not authenticated as described in {{poolauth}}.
 
 ## NTP Server Deny {#serverdeny}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
@@ -158,6 +169,10 @@ In the pool design presented above, the pool effectively acts as a man in the mi
 The fact that the pool also gets access to key material makes it less advisable to have a pool as a time source for another pool, as this increases the number of actors with access to the key material even further.
 
 The design above does avoid sharing key material between all time sources. As a consequence, a time source in the pool will not be able to break confidentiality or authenticity of traffic with other time sources of the pool. Furthermore, any traffic directly with the time source has no key material involved that is known to the pool.
+
+## Keep alive and denial of service attack risk
+
+The Keep Alive NTS record allows a client to keep an NTS key exchange connection open for significantly longer than usual. If arbitrary clients were allowed to do this, they could use it trivially run a server out of resources such as file descriptors. It is therefore important that public servers restrict keeping connections alive to a limited set of trusted clients. The suggested mechanism for doing this is to use TLS client authentication for these clients.
 
 ## Error handling
 
