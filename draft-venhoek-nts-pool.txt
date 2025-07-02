@@ -5,8 +5,8 @@
 ntp                                                           D. Venhoek
 Internet-Draft                                               F. D. Vries
 Intended status: Standards Track                         M. Schoolderman
-Expires: 14 December 2025                               Tweede golf B.V.
-                                                            12 June 2025
+Expires: 3 January 2026                                 Tweede golf B.V.
+                                                             2 July 2025
 
 
                    NTS extensions for enabling pools
@@ -18,9 +18,9 @@ Abstract
    NTS pools that are able to be used by clients without any knowledge
    beyond plain NTS.  The work here focuses purely on creating an
    intermediate NTS Key Exchange server that can be configured with the
-   addresses of multiple downstream servers and distribute load between
-   them.  The parts of pool operation dealing with managing the list of
-   servers are left out of scope for this work.
+   addresses of multiple servers and distribute load between them.  The
+   parts of pool operation dealing with managing the list of servers are
+   left out of scope for this work.
 
 About This Document
 
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 December 2025.
+   This Internet-Draft will expire on 3 January 2026.
 
 Copyright Notice
 
@@ -101,10 +101,9 @@ Table of Contents
 
    *  is usable without changes to the client,
 
-   *  avoids constraining the downstream time source's cookie format,
+   *  avoids constraining the time source's cookie format,
 
-   *  avoids downstream time sources having potential access to all
-      traffic.
+   *  avoids time sources having potential access to all traffic.
 
 2.  Conventions and Definitions
 
@@ -112,12 +111,12 @@ Table of Contents
    roles in an NTS Key Exchange session as specified in [RFC8915].
    Please note that this means that the pool itself operates in both
    roles: As a server towards users of the pool, and as a client towards
-   the downstream time sources.
+   the time sources.
 
    Where further specificity of the role of a participant is needed, we
    will use the term user to indicate a user of a pool, the term pool to
-   indicate the pool itself, and downstream time source for the time
-   servers that the pool delegates the actual providing of time to.
+   indicate the pool itself, and time source for the time servers that
+   the pool delegates the actual providing of time to.
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -129,21 +128,19 @@ Table of Contents
 
    We propose a pool model where the pool provides an NTS Key Exchange
    service to the outside world.  A major advantage of this model is
-   that it avoids having to distribute certificates to all downstream
-   time servers.  Contrary to [RFC8915], there is no direct TLS
-   connection between the client and the selected downstream time
-   service.
+   that it avoids having to distribute certificates to all time sources.
+   Contrary to [RFC8915], there is no direct TLS connection between the
+   client and the selected time source.
 
    In [RFC8915], cookies are generated based on key material that is
    extracted from this TLS connection.  Our proposed model instead
    establishes two TLS connections: between the client and the pool, and
-   between the pool and the downstream time server.  Because cookies
-   need to be generated using key material from the client, the pool
-   extracts this key material and sends it to the server.  The server
-   uses this key material (rather than key material extracted from its
-   connection with the pool) to generate cookies.  This way, the pool
-   can remain oblivious to the cookie format of the downstream time
-   server.
+   between the pool and the time source.  Because cookies need to be
+   generated using key material from the client, the pool extracts this
+   key material and sends it to the server.  The server uses this key
+   material (rather than key material extracted from its connection with
+   the pool) to generate cookies.  This way, the pool can remain
+   oblivious to the cookie format of the time source.
 
    The pool MUST ensure that the response sent to the client includes an
    NTPv4 Server Negotiation record as specified in Section 4.1.7 of
@@ -154,12 +151,12 @@ Table of Contents
    One challenge with getting multiple time sources from a single NTS
    Key Exchange server is that clients that allow for explicit pool
    configuration want to end up with multiple independent time sources.
-   Without additional support, a user of a pool might receive a
-   downstream time source it already has from an NTS Key Exchange
-   session, resulting in that session being a waste of time.  To avoid
-   unneccessary NTS Key Exchange sessions, we also introduce a record
-   that clients can use to indicate which downstream time servers they
-   don't want, because they already have them.
+   Without additional support, a user of a pool might receive a time
+   source it already has from an NTS Key Exchange session, resulting in
+   that session being a waste of time.  To avoid unneccessary NTS Key
+   Exchange sessions, we also introduce a record that clients can use to
+   indicate which time sources they don't want, because they already
+   have them.
 
 5.  Pool authentication
 
@@ -183,8 +180,8 @@ Table of Contents
 
    Indicates a desire to keep the TLS connection active for more than
    one message exchange.  This can be used by a pool to reuse
-   connections to downstream NTS Key Exchange servers multiple times,
-   reducing load on both the pool and downstream servers.
+   connections to a time source's NTS Key Exchange servers multiple
+   times, reducing load on both the pool and time sources.
 
    A client MUST send this record with a body of size 0.  A client MUST
    NOT use Keep Alive unless the request contains a record type allowing
@@ -214,8 +211,8 @@ Table of Contents
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4004) Critical bit: 1
 
-   This record can be used by a pool to query downstream servers about
-   which next protocols they support.
+   This record can be used by a pool to query time sources about which
+   next protocols they support.
 
    A client MUST send this record with no body.  Clients MAY use Keep
    Alive in combination with this record.  Contrary to [RFC8915], a
@@ -235,8 +232,8 @@ Table of Contents
    Record Type Number: To be assigned by IANA (draft implementations:
    0x4001) Critical bit: 1
 
-   This record can be used by a pool to query downstream servers about
-   which AEAD algorithms they support.
+   This record can be used by a pool to query time sources about which
+   AEAD algorithms they support.
 
    A client MUST send this record with no body.  Clients MAY use Keep
    Alive in combination with this record.  Contrary to [RFC8915], a
@@ -268,7 +265,7 @@ Table of Contents
    When a client is properly authenticated, the server SHOULD NOT
    perform Key Extraction but rather use the keys provided by the client
    in the extension field.  This allows a pool to do key negotiation on
-   behalf of its users with the downstream NTS Key Exchange servers,
+   behalf of its users with the time source's NTS Key Exchange servers,
    even though it terminates the TLS connection.
 
    When used, the client MUST provide an AEAD Algorithm Negotiation
@@ -316,29 +313,27 @@ Table of Contents
    servers it controls anyway.
 
    The fact that the pool also gets access to key material makes it less
-   advisable to have a pool as a downstream time source for another
-   pool, as this increases the number of actors with access to the key
-   material even further.
+   advisable to have a pool as a time source for another pool, as this
+   increases the number of actors with access to the key material even
+   further.
 
-   The design above does avoid sharing key material between all
-   downstream time sources.  As a consequence, a downstream time source
-   in the pool will not be able to break confidentiality or authenticity
-   of traffic with other downstream time sources of the pool.
-   Furthermore, any traffic directly with the downstream time source has
-   no key material involved that is known to the pool.
+   The design above does avoid sharing key material between all time
+   sources.  As a consequence, a time source in the pool will not be
+   able to break confidentiality or authenticity of traffic with other
+   time sources of the pool.  Furthermore, any traffic directly with the
+   time source has no key material involved that is known to the pool.
 
 7.2.  Error handling
 
-   To avoid giving multiple downstream time sources access to the key
-   material of the end user, it is important that the keys extracted
-   from the TLS session between the user and the pool are sent to at
-   most one downstream time source.  If an error occurs after sending
-   the Fixed Key Request record, either with the TLS connection between
-   the pool and the downstream time source, or by being explicitly
-   reported by the downstream time source to the pool, the pool SHOULD
-   return an error to the user.  Retrying with a different downstream
-   time source during the same TLS session may unintentionally leave the
-   user vulnerable to the operator of the originally selected downstream
+   To avoid giving multiple time sources access to the key material of
+   the end user, it is important that the keys extracted from the TLS
+   session between the user and the pool are sent to at most one time
+   source.  If an error occurs after sending the Fixed Key Request
+   record, either with the TLS connection between the pool and the time
+   source, or by being explicitly reported by the time source to the
+   pool, the pool SHOULD return an error to the user.  Retrying with a
+   different time source during the same TLS session may unintentionally
+   leave the user vulnerable to the operator of the originally selected
    time source.
 
 8.  IANA Considerations
