@@ -1,3 +1,5 @@
+<!-- regenerate: on (set to off if you edit this file) -->
+
 # NTS extensions for enabling pools
 
 This is the working area for the individual Internet-Draft, "NTS extensions for enabling pools".
@@ -11,7 +13,7 @@ This is the working area for the individual Internet-Draft, "NTS extensions for 
 ## Contributing
 
 See the
-[guidelines for contributions](CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/pendulum-project/nts-pool-draft/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
