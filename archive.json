@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-01T00:29:03.102169+00:00",
+  "timestamp": "2025-07-03T00:25:18.973292+00:00",
   "repo": "pendulum-project/nts-pool-draft",
   "labels": [
     {
@@ -442,6 +442,90 @@
       "mergedBy": "davidv1992",
       "mergeCommit": {
         "oid": "1467795a38836715dd757fa434c2d89fc70d493c"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOK6Dtvs6dC5Th",
+      "title": "Stop using the word downstream cause it is unintuitive.",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/9",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-02T08:56:06Z",
+      "updatedAt": "2025-07-02T08:56:13Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "50b5d9b6e996d7af8e5dfeee893c9d32fd160b6d",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "consistent-terminology",
+      "headRefOid": "cf5710eceb26bc983ee90749c5223dde17345984",
+      "closedAt": "2025-07-02T08:56:13Z",
+      "mergedAt": "2025-07-02T08:56:13Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "7253bd06479cd11df1b6262d26db232d7b4586e1"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOK6Dtvs6dC6bc",
+      "title": "Update tools",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/10",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-02T08:57:51Z",
+      "updatedAt": "2025-07-02T08:59:16Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "7253bd06479cd11df1b6262d26db232d7b4586e1",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "update-tools",
+      "headRefOid": "092a8e98efbb073db88ce3177c3183e3fe18869d",
+      "closedAt": "2025-07-02T08:59:16Z",
+      "mergedAt": "2025-07-02T08:59:16Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "b5d5778de0c296935a2af8b1c7eb1e0a3c3f171d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOK6Dtvs6dD68q",
+      "title": "Reworked document flow to more clearly introduce what nts records are",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/11",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "useful when.",
+      "createdAt": "2025-07-02T10:43:21Z",
+      "updatedAt": "2025-07-02T10:44:09Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "b5d5778de0c296935a2af8b1c7eb1e0a3c3f171d",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "flow-rework",
+      "headRefOid": "bf630814bd66fb893198933f40cbe09491ffc9d7",
+      "closedAt": "2025-07-02T10:44:09Z",
+      "mergedAt": "2025-07-02T10:44:09Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "2a025fe350c20a869ab85bb1be014d34b93c5d1c"
       },
       "comments": [],
       "reviews": []
