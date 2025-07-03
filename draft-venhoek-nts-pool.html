@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Venhoek, et al.</td>
-<td class="center">Expires 3 January 2026</td>
+<td class="center">Expires 4 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-venhoek-nts-pool-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-02" class="published">2 July 2025</time>
+<time datetime="2025-07-03" class="published">3 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-03">3 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-01-04">4 January 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1268,7 +1268,7 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-general-pool-architecture" class="section-name selfRef">General pool architecture</a>
       </h2>
 <p id="section-3-1">We propose a pool model where the pool provides an NTS Key Exchange service to the outside world. A major advantage of this model is that it avoids having to distribute certificates to all time sources. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, there is no direct TLS connection between the client and the selected time source.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">In <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the time source. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the server. The server uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. This way, the pool can remain oblivious to the cookie format of the time source.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">In <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, cookies are generated based on key material that is extracted from this TLS connection. Our proposed model instead establishes two TLS connections: between the client and the pool, and between the pool and the time source. Because cookies need to be generated using key material from the client, the pool extracts this key material and sends it to the time source. The time source uses this key material (rather than key material extracted from its connection with the pool) to generate cookies. This way, the pool can remain oblivious to the cookie format of the time source.<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="communication-between-the-pool-and-time-sources">
@@ -1313,7 +1313,7 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
 <p id="section-6.1-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4000)
 Critical bit: 0<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">Indicates a desire to keep the TLS connection active for more than one message exchange. This can be used by a pool to reuse connections to a time source's NTS Key Exchange servers multiple times, reducing load on both the pool and time sources.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">A client <span class="bcp14">MUST</span> send this record with a body of size 0. A client <span class="bcp14">MUST NOT</span> use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">When a client sends this record the body <span class="bcp14">MUST</span> have size 0. A client <span class="bcp14">MUST NOT</span> use Keep Alive unless the request contains a record type allowing the use of Keep Alive. Within this specification, that is limited to the Supported Protocol List and Fixed Key Request records. A server <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 <p id="section-6.1-4">When supported by a server and allowed for the request in question, the server <span class="bcp14">MAY</span> include a Keep Alive record with a body of size 0 in the response and keep the TLS connection active after the response to handle further requests from the client. A client <span class="bcp14">SHOULD</span> ignore any body for the Keep Alive record. As keeping a connection active requires additional resources on the server, a server <span class="bcp14">SHOULD NOT</span> respond with a Keep Alive record to unauthenticated clients.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
 <p id="section-6.1-5">When included in the request or response, the client respectively server <span class="bcp14">MAY</span>, contrary to the requirements in <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, send another request or response. Any TLS "close_notify" <span class="bcp14">SHALL</span> be sent only after the last request or response respectively to use the connection.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 <p id="section-6.1-6">Once a Keep Alive record has been sent by a client, or honored by a server, the TLS connection over which it was sent <span class="bcp14">MUST NOT</span> be used for key extraction. Doing so anyway can result in the reuse of keys and may result in loss of confidentiality or authenticity of the resulting NTP exchanges.<a href="#section-6.1-6" class="pilcrow">¶</a></p>
@@ -1327,8 +1327,8 @@ Critical bit: 0<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.2-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4004)
 Critical bit: 1<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.2-2">This record can be used by a pool to query time sources about which next protocols they support.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
-<p id="section-6.2-3">A client <span class="bcp14">MUST</span> send this record with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
-<p id="section-6.2-4">Servers <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in the response a Supported Next Protocol List record with as data a list of 16-bit integers, giving the protocol IDs the server supports. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.2-3">When a client sends this record the body <span class="bcp14">MUST</span> have size 0. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.2-4">When receiving this record, servers <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in the response a Supported Next Protocol List record with as data a list of 16-bit integers, giving the protocol IDs the server supports. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <p id="section-6.2-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, AEAD algorithm, or keys for this request.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1340,8 +1340,8 @@ Critical bit: 1<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4001)
 Critical bit: 1<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-2">This record can be used by a pool to query time sources about which AEAD algorithms they support.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.3-3">A client <span class="bcp14">MUST</span> send this record with no body. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
-<p id="section-6.3-4">Servers <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in the response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
+<p id="section-6.3-3">When a client sends this record the body <span class="bcp14">MUST</span> have size 0. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.3-4">When receiving this record, servers <span class="bcp14">MUST</span> ignore any client body sent and <span class="bcp14">MUST</span> send in the response a Supported Algorithm List record with as data a list of tuples of two 16-bit integers, the first giving an algorithm ID for the AEAD and the second giving the length of the key for that algorithm ID. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
 <p id="section-6.3-5">When included, the server <span class="bcp14">MUST NOT</span> negotiate a next protocol, AEAD algorithm, or keys for this request.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
 <p id="section-6.3-6">We include the algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithms exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any changes to the pool software.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
 </section>
@@ -1385,6 +1385,7 @@ Critical Bit: 0<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 <p id="section-7.1-1">In the pool design presented above, the pool effectively acts as a man in the middle between the user and the ultimate time source during the NTS Key Exchange portion of the session. This means that the pool has access to the key material of these sessions. Although this is a small additional risk, we consider this acceptable because the pool could already always assign sessions for a user to time servers it controls anyway.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <p id="section-7.1-2">The fact that the pool also gets access to key material makes it less advisable to have a pool as a time source for another pool, as this increases the number of actors with access to the key material even further.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <p id="section-7.1-3">The design above does avoid sharing key material between all time sources. As a consequence, a time source in the pool will not be able to break confidentiality or authenticity of traffic with other time sources of the pool. Furthermore, any traffic directly with the time source has no key material involved that is known to the pool.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1-4">It must be noted that clients need to trust the pool to check the TLS certificates of the time sources. It is imperative that the pool does this correctly, and that it has a trusted source of time to be able to do revocation checks.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="keep-alive-and-denial-of-service-attack-risk">
