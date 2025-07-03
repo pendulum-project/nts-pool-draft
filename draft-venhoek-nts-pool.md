@@ -25,7 +25,7 @@ venue:
 author:
  -
     fullname: "David Venhoek"
-    organization: Tweede golf B.V.
+    organization: Trifecta Tech Foundation
     email: "david@tweedegolf.com"
  -
     fullname: "Folkert de Vries"
