@@ -3,9 +3,10 @@
 
 
 ntp                                                           D. Venhoek
-Internet-Draft                                               F. D. Vries
-Intended status: Standards Track                         M. Schoolderman
-Expires: 4 January 2026                                 Tweede golf B.V.
+Internet-Draft                                  Trifecta Tech Foundation
+Intended status: Standards Track                             F. D. Vries
+Expires: 4 January 2026                                  M. Schoolderman
+                                                        Tweede golf B.V.
                                                              3 July 2025
 
 
@@ -459,7 +460,7 @@ Acknowledgments
 Authors' Addresses
 
    David Venhoek
-   Tweede golf B.V.
+   Trifecta Tech Foundation
    Email: david@tweedegolf.com
 
 
