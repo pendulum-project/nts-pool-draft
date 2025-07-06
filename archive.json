@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-03T00:25:18.973292+00:00",
+  "timestamp": "2025-07-06T00:28:05.801786+00:00",
   "repo": "pendulum-project/nts-pool-draft",
   "labels": [
     {
@@ -526,6 +526,62 @@
       "mergedBy": "davidv1992",
       "mergeCommit": {
         "oid": "2a025fe350c20a869ab85bb1be014d34b93c5d1c"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOK6Dtvs6dSOe_",
+      "title": "Fixed a number of issues signalled by Marc.",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/12",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-03T14:52:48Z",
+      "updatedAt": "2025-07-03T14:52:54Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "2a025fe350c20a869ab85bb1be014d34b93c5d1c",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "comments-marc",
+      "headRefOid": "4778f568d34708dfadb046a90b8b53fb940fbd2a",
+      "closedAt": "2025-07-03T14:52:54Z",
+      "mergedAt": "2025-07-03T14:52:54Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "843539aed0cbfe46f3264f7f07d98f819fcbfa42"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOK6Dtvs6dSTTC",
+      "title": "Changed david's affiliation to trifecta tech foundation.",
+      "url": "https://github.com/pendulum-project/nts-pool-draft/pull/13",
+      "state": "MERGED",
+      "author": "davidv1992",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-03T14:58:24Z",
+      "updatedAt": "2025-07-03T14:58:30Z",
+      "baseRepository": "pendulum-project/nts-pool-draft",
+      "baseRefName": "main",
+      "baseRefOid": "843539aed0cbfe46f3264f7f07d98f819fcbfa42",
+      "headRepository": "pendulum-project/nts-pool-draft",
+      "headRefName": "david-trifecta",
+      "headRefOid": "7195dd3eff02d85070b269be76553f6ae404920d",
+      "closedAt": "2025-07-03T14:58:30Z",
+      "mergedAt": "2025-07-03T14:58:30Z",
+      "mergedBy": "davidv1992",
+      "mergeCommit": {
+        "oid": "cbe633c6cc875a0e3e423f814f01efd593274bc6"
       },
       "comments": [],
       "reviews": []
