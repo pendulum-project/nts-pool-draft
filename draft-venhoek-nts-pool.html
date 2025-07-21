@@ -11,12 +11,12 @@
 <meta content="
        The aim of this document is to describe a proof of concept system for NTS pools that are able to be used by clients without any knowledge beyond plain NTS. The work here focuses purely on creating an intermediate NTS Key Exchange server that can be configured with the addresses of multiple servers and distribute load between them. The parts of pool operation dealing with managing the list of servers are left out of scope for this work. 
     " name="description">
-<meta content="xml2rfc 3.29.0" name="generator">
+<meta content="xml2rfc 3.30.0" name="generator">
 <meta content="NTP" name="keyword">
 <meta content="NTS" name="keyword">
 <meta content="draft-venhoek-nts-pool-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.29.0
+  xml2rfc 3.30.0
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1051,7 +1051,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Venhoek, et al.</td>
-<td class="center">Expires 4 January 2026</td>
+<td class="center">Expires 22 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-venhoek-nts-pool-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-03" class="published">3 July 2025</time>
+<time datetime="2025-07-21" class="published">21 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
-<dd class="intended-status">Standards Track</dd>
+<dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-04">4 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-01-22">22 January 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1098,7 +1098,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://pendulum-project.github.io/nts-pool-draft/draft-nts-pool.html">https://pendulum-project.github.io/nts-pool-draft/draft-nts-pool.html</a></span>.
+        The latest revision of this draft can be found at <span><a href="https://pendulum-project.github.io/nts-pool-draft/draft-venhoek-nts-pool.html">https://pendulum-project.github.io/nts-pool-draft/draft-venhoek-nts-pool.html</a></span>.
         Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-venhoek-nts-pool/">https://datatracker.ietf.org/doc/draft-venhoek-nts-pool/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">Source for this draft and an issue tracker can be found at
         <span><a href="https://github.com/pendulum-project/nts-pool-draft">https://github.com/pendulum-project/nts-pool-draft</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
@@ -1122,7 +1122,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1184,10 +1184,13 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-supported-algorithm-list" class="internal xref">Supported Algorithm List</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
-                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-fixed-key-request" class="internal xref">Fixed Key Request</a></p>
+                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-list-server-names" class="internal xref">List Server Names</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5">
-                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-ntp-server-deny" class="internal xref">NTP Server Deny</a></p>
+                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-fixed-key-request" class="internal xref">Fixed Key Request</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.6">
+                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="auto internal xref">6.6</a>.  <a href="#name-ntp-server-deny" class="internal xref">NTP Server Deny</a></p>
 </li>
             </ul>
 </li>
@@ -1277,9 +1280,10 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-communication-between-the-p" class="section-name selfRef">Communication between the pool and time sources</a>
       </h2>
 <p id="section-4-1">To facilitate communication between the pool and the time sources, 4 new NTS records are defined in <a href="#records" class="auto internal xref">Section 6</a>. Together these records provide a way for the pool to provide key exchange services to clients on behalf of the time sources.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The Supported Next Protocol List (<a href="#supportedprotocol" class="auto internal xref">Section 6.2</a>) and Supported Algorithm List (<a href="#supportedalgorithm" class="auto internal xref">Section 6.3</a>) records allow the pool to ask a time source which protocols and algorithms it supports. This information can be requested by the pool at any time, and can be cached for short periods of time to improve efficiency.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">Using knowledge of a time source's supported protocols and algorithms, the pool can then handle client connections for that time source, using the clients indicated desires to choose a concrete next protocol and AEAD algorithm. The pool can then extract the keys from the TLS connection and use the Fixed Key record (<a href="#fixedkey" class="auto internal xref">Section 6.4</a>) to request cookies for these keys from the time source.<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">As it is wasteful to setup a new TLS session between the pool and the time source for each of these interactions. To facilitate reuse of the TLS sessions, we further introduce the Keep Alive record (<a href="#keepalive" class="auto internal xref">Section 6.1</a>). This record allows the pool to indicate to the time source a desire to keep the session alive for more than a single request-response interaction.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-2">The Supported Next Protocol List (<a href="#supportedprotocol" class="auto internal xref">Section 6.2</a>), Supported Algorithm List (<a href="#supportedalgorithm" class="auto internal xref">Section 6.3</a>) and List Server Names (<a href="#listservernames" class="auto internal xref">Section 6.4</a>)) records allow the pool to ask a time source which protocols and algorithms it supports, and which server names are used in the NTP server records it generates. This information can be requested by the pool at any time, and can be cached for short periods of time to improve efficiency.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Using knowledge of a time source's supported protocols and algorithms, the pool can then handle client connections for that time source, using the clients indicated desires to choose a concrete next protocol and AEAD algorithm. The pool can then extract the keys from the TLS connection and use the Fixed Key record (<a href="#fixedkey" class="auto internal xref">Section 6.5</a>) to request cookies for these keys from the time source.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">The list of server names provided by the time source can be used by the pool to honor requests by the client to not repeat a certain server. This allows more efficient retrieval of multiple sources from a pool.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">As it is wasteful to setup a new TLS session between the pool and the time source for each of these interactions. To facilitate reuse of the TLS sessions, we further introduce the Keep Alive record (<a href="#keepalive" class="auto internal xref">Section 6.1</a>). This record allows the pool to indicate to the time source a desire to keep the session alive for more than a single request-response interaction.<a href="#section-4-5" class="pilcrow">¶</a></p>
 <div id="poolauth">
 <section id="section-4.1">
         <h3 id="name-authenticating-the-pool-to-">
@@ -1297,7 +1301,7 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-communication-between-clien" class="section-name selfRef">Communication between clients and the pool</a>
       </h2>
 <p id="section-5-1">A client requesting time from the pool can make a normal NTS Key Exchange request to the pool. In the response to the client the pool needs to tell which NTP server is to be used to get the time. This can be done through the already existing NTP Server Record. However, the pool needs to ensure it is present, and therefore <span class="bcp14">MUST</span> add such a record to the response unless one is already provided by the time source.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Clients that are aware they are talking to a pool may want to get multiple independent time sources from that pool. For this, they need to be able to tell the pool which time sources they already have, otherwise they might get a time source that they are already talking to. To achieve this, a client can use the NTP Server Deny record (<a href="#serverdeny" class="auto internal xref">Section 6.5</a>) to indicate it would rather not receive a particular server. Clients <span class="bcp14">MUST</span> use the precise name given by the pool in a previous NTP Server record, otherwise the pool may not recognize which time source the client is referring to.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-2">Clients that are aware they are talking to a pool may want to get multiple independent time sources from that pool. For this, they need to be able to tell the pool which time sources they already have, otherwise they might get a time source that they are already talking to. To achieve this, a client can use the NTP Server Deny record (<a href="#serverdeny" class="auto internal xref">Section 6.6</a>) to indicate it would rather not receive a particular server. Clients <span class="bcp14">MUST</span> use the precise name given by the pool in a previous NTP Server record, otherwise the pool may not recognize which time source the client is referring to.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="records">
@@ -1346,28 +1350,41 @@ Critical bit: 1<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-6">We include the algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithms exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any changes to the pool software.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="fixedkey">
+<div id="listservernames">
 <section id="section-6.4">
-        <h3 id="name-fixed-key-request">
-<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-fixed-key-request" class="section-name selfRef">Fixed Key Request</a>
+        <h3 id="name-list-server-names">
+<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-list-server-names" class="section-name selfRef">List Server Names</a>
         </h3>
-<p id="section-6.4-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
-Critical Bit: 1<a href="#section-6.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.4-2">When a client is properly authenticated, the server <span class="bcp14">SHOULD NOT</span> perform Key Extraction but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalf of its users with the time source's NTS Key Exchange servers, even though it terminates the TLS connection.<a href="#section-6.4-2" class="pilcrow">¶</a></p>
-<p id="section-6.4-3">When used, the client <span class="bcp14">MUST</span> provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes <span class="bcp14">MUST</span> be the C2S Key and the second set of N bytes <span class="bcp14">MUST</span> be the S2C key. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record.<a href="#section-6.4-3" class="pilcrow">¶</a></p>
-<p id="section-6.4-4">This record <span class="bcp14">MUST NOT</span> be sent by a server. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
+<p id="section-6.4-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4005)
+Critical bit: 1<a href="#section-6.4-1" class="pilcrow">¶</a></p>
+<p id="section-6.4-2">This record can be used by a pool to query time sources about which server names they use in NTP server records in their responses.<a href="#section-6.4-2" class="pilcrow">¶</a></p>
+<p id="section-6.4-3">When a client sends this record the body <span class="bcp14">MUST</span> have size 0. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record. Contrary to <span>[<a href="#RFC8915" class="cite xref">RFC8915</a>]</span>, a request with this record <span class="bcp14">SHOULD NOT</span> include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.<a href="#section-6.4-3" class="pilcrow">¶</a></p>
+<p id="section-6.4-4">Servers <span class="bcp14">MUST NOT</span> include this record in a response. When receiving this record, servers <span class="bcp14">MUST</span> ignore any body of this record sent by the client, and <span class="bcp14">MUST</span> send in the response one NTP server record for each server name the server may use responses to fixed key requests. If a server never sents a NTP server record in response to a fixed key request, it <span class="bcp14">MAY</span> opt to not provide one in response to this record.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
+<p id="section-6.4-5">When receiving this record, a server <span class="bcp14">MUST NOT</span> negotiate a next protocol, AEAD algorithm, or keys for this request. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.4-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="fixedkey">
+<section id="section-6.5">
+        <h3 id="name-fixed-key-request">
+<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-fixed-key-request" class="section-name selfRef">Fixed Key Request</a>
+        </h3>
+<p id="section-6.5-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
+Critical Bit: 1<a href="#section-6.5-1" class="pilcrow">¶</a></p>
+<p id="section-6.5-2">When a client is properly authenticated, the server <span class="bcp14">SHOULD NOT</span> perform Key Extraction but rather use the keys provided by the client in the extension field. This allows a pool to do key negotiation on behalf of its users with the time source's NTS Key Exchange servers, even though it terminates the TLS connection.<a href="#section-6.5-2" class="pilcrow">¶</a></p>
+<p id="section-6.5-3">When used, the client <span class="bcp14">MUST</span> provide an AEAD Algorithm Negotiation record with precisely one algorithm, and a Next Protocol Negotiation record with precisely one next protocol. The data in the Fixed Key Request record must have length twice the key length N of the AEAD algorithm in the AEAD Algorithm Negotiation record. The first N bytes <span class="bcp14">MUST</span> be the C2S Key and the second set of N bytes <span class="bcp14">MUST</span> be the S2C key. Clients <span class="bcp14">MAY</span> use Keep Alive in combination with this record.<a href="#section-6.5-3" class="pilcrow">¶</a></p>
+<p id="section-6.5-4">This record <span class="bcp14">MUST NOT</span> be sent by a server. A server <span class="bcp14">MAY</span> treat this record as unknown for clients that are not authenticated as described in <a href="#poolauth" class="auto internal xref">Section 4.1</a>.<a href="#section-6.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="serverdeny">
-<section id="section-6.5">
+<section id="section-6.6">
         <h3 id="name-ntp-server-deny">
-<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-ntp-server-deny" class="section-name selfRef">NTP Server Deny</a>
+<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-ntp-server-deny" class="section-name selfRef">NTP Server Deny</a>
         </h3>
-<p id="section-6.5-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
-Critical Bit: 0<a href="#section-6.5-1" class="pilcrow">¶</a></p>
-<p id="section-6.5-2">When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.<a href="#section-6.5-2" class="pilcrow">¶</a></p>
-<p id="section-6.5-3">A client <span class="bcp14">MAY</span> send multiple of these records if desired. The data in the record <span class="bcp14">SHOULD</span> match that given through an NTPv4 Server Negotiation received in an earlier response from the same NTS Key Exchange server.<a href="#section-6.5-3" class="pilcrow">¶</a></p>
-<p id="section-6.5-4"><span class="bcp14">MUST NOT</span> be sent by a server. Server <span class="bcp14">MAY</span> at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.<a href="#section-6.5-4" class="pilcrow">¶</a></p>
+<p id="section-6.6-1">Record Type Number: To be assigned by IANA (draft implementations: 0x4003)
+Critical Bit: 0<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+<p id="section-6.6-2">When provided by a client, indicates a desire to connect to a server other than the server specified in the record. This can be used to ensure a client receives independent NTP servers from one NTS Key Exchange server without having to potentially try multiple times to get a new server.<a href="#section-6.6-2" class="pilcrow">¶</a></p>
+<p id="section-6.6-3">A client <span class="bcp14">MAY</span> send multiple of these records if desired. The data in the record <span class="bcp14">SHOULD</span> match that given through an NTPv4 Server Negotiation received in an earlier response from the same NTS Key Exchange server.<a href="#section-6.6-3" class="pilcrow">¶</a></p>
+<p id="section-6.6-4"><span class="bcp14">MUST NOT</span> be sent by a server. Server <span class="bcp14">MAY</span> at its discretion ignore the request from the client and still provide the given server in an NTPv4 Server Negotiation record.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1431,7 +1448,7 @@ Critical Bit: 0<a href="#section-6.5-1" class="pilcrow">¶</a></p>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
             <td class="text-left" rowspan="1" colspan="1">Supported Next Protocol List</td>
-            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#keepalive" class="auto internal xref">Section 6.1</a>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#supportedprotocol" class="auto internal xref">Section 6.2</a>
 </td>
           </tr>
           <tr>
@@ -1442,14 +1459,20 @@ Critical Bit: 0<a href="#section-6.5-1" class="pilcrow">¶</a></p>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
+            <td class="text-left" rowspan="1" colspan="1">List Server Names</td>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#listservernames" class="auto internal xref">Section 6.4</a>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
             <td class="text-left" rowspan="1" colspan="1">Fixed Key Request</td>
-            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#fixedkey" class="auto internal xref">Section 6.4</a>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#fixedkey" class="auto internal xref">Section 6.5</a>
 </td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">[[TBD]]</td>
             <td class="text-left" rowspan="1" colspan="1">NTP Server Deny</td>
-            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#serverdeny" class="auto internal xref">Section 6.5</a>
+            <td class="text-left" rowspan="1" colspan="1">[[this memo]] <a href="#serverdeny" class="auto internal xref">Section 6.6</a>
 </td>
           </tr>
         </tbody>
