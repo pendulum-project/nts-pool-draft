@@ -1,7 +1,7 @@
 ---
 title: "NTS extensions for enabling pools"
 abbrev: "NTS pools"
-category: std
+category: exp
 
 docname: draft-venhoek-nts-pool-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
@@ -20,7 +20,7 @@ venue:
 #  mail: WG@example.com
 #  arch: https://example.com/WG
   github: "pendulum-project/nts-pool-draft"
-  latest: "https://pendulum-project.github.io/nts-pool-draft/draft-nts-pool.html"
+  latest: "https://pendulum-project.github.io/nts-pool-draft/draft-venhoek-nts-pool.html"
 
 author:
  -
@@ -80,9 +80,11 @@ In {{RFC8915}}, cookies are generated based on key material that is extracted fr
 
 To facilitate communication between the pool and the time sources, 4 new NTS records are defined in {{records}}. Together these records provide a way for the pool to provide key exchange services to clients on behalf of the time sources.
 
-The Supported Next Protocol List ({{supportedprotocol}}) and Supported Algorithm List ({{supportedalgorithm}}) records allow the pool to ask a time source which protocols and algorithms it supports. This information can be requested by the pool at any time, and can be cached for short periods of time to improve efficiency.
+The Supported Next Protocol List ({{supportedprotocol}}), Supported Algorithm List ({{supportedalgorithm}}) and List Server Names ({{listservernames}})) records allow the pool to ask a time source which protocols and algorithms it supports, and which server names are used in the NTP server records it generates. This information can be requested by the pool at any time, and can be cached for short periods of time to improve efficiency.
 
 Using knowledge of a time source's supported protocols and algorithms, the pool can then handle client connections for that time source, using the clients indicated desires to choose a concrete next protocol and AEAD algorithm. The pool can then extract the keys from the TLS connection and use the Fixed Key record ({{fixedkey}}) to request cookies for these keys from the time source.
+
+The list of server names provided by the time source can be used by the pool to honor requests by the client to not repeat a certain server. This allows more efficient retrieval of multiple sources from a pool.
 
 As it is wasteful to setup a new TLS session between the pool and the time source for each of these interactions. To facilitate reuse of the TLS sessions, we further introduce the Keep Alive record ({{keepalive}}). This record allows the pool to indicate to the time source a desire to keep the session alive for more than a single request-response interaction.
 
@@ -140,6 +142,18 @@ When included, the server MUST NOT negotiate a next protocol, AEAD algorithm, or
 
 We include the algorithm key size in the response so that a pool does not itself need knowledge of which AEAD algorithms exist, and what their key sizes are. Instead, it can use the provided key length when extracting keys from the TLS connection between end user and pool. This allows adoption of new AEAD algorithms without any changes to the pool software.
 
+## List Server Names {#listservernames}
+Record Type Number: To be assigned by IANA (draft implementations: 0x4005)
+Critical bit: 1
+
+This record can be used by a pool to query time sources about which server names they use in NTP server records in their responses.
+
+When a client sends this record the body MUST have size 0. Clients MAY use Keep Alive in combination with this record. Contrary to {{RFC8915}}, a request with this record SHOULD NOT include a "Next Protocol Negotiation", "AEAD Algorithm Negotiation" or "Fixed Key Request" record.
+
+Servers MUST NOT include this record in a response. When receiving this record, servers MUST ignore any body of this record sent by the client, and MUST send in the response one NTP server record for each server name the server may use responses to fixed key requests. If a server never sents a NTP server record in response to a fixed key request, it MAY opt to not provide one in response to this record.
+
+When receiving this record, a server MUST NOT negotiate a next protocol, AEAD algorithm, or keys for this request. A server MAY treat this record as unknown for clients that are not authenticated as described in {{poolauth}}.
+
 ## Fixed Key Request {#fixedkey}
 Record Type Number: To be assigned by IANA (draft implementations: 0x4002)
 Critical Bit: 1
@@ -187,8 +201,9 @@ IANA is requested to allocate the following entries in the Network Time Security
 | Record Type Number | Description | Reference |
 | --- | --- | --- |
 | [[TBD]] | Keep Alive | [[this memo]] {{keepalive}} |
-| [[TBD]] | Supported Next Protocol List | [[this memo]] {{keepalive}} |
+| [[TBD]] | Supported Next Protocol List | [[this memo]] {{supportedprotocol}} |
 | [[TBD]] | Supported Algorithm List | [[this memo]] {{supportedalgorithm}} |
+| [[TBD]] | List Server Names | [[this memo]] {{listservernames}} |
 | [[TBD]] | Fixed Key Request | [[this memo]] {{fixedkey}} |
 | [[TBD]] | NTP Server Deny | [[this memo]] {{serverdeny}} |
 
